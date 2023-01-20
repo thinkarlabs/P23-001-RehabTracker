@@ -1,0 +1,21 @@
+{% extends "static/pages/_common/base.htm" %}
+
+{% block body %}
+<div id='x-main' class="container-full mt-5 p-3" style="min-height:550px">
+<div class="container-md">
+
+	<div class="row">
+	<div class="col-12 p-2">
+		<h3 class="float-start ps-2">Sessions</h3>
+		<button type="button" class="btn btn-primary float-end mx-2" data-nav='physio.session.list'><i class="bi bi-search"></i></button>
+		<input type="text" class="form-control float-end mx-2" id="exampleFormControlInput1" placeholder="Search Patient" style="width:160px">		
+	</div>
+	
+	<div id="ses_det">
+	
+	</div>
+	
+	</div>
+</div>	
+</div>
+{% endblock %}

@@ -1,0 +1,36 @@
+{
+  "header": "Schedule",
+  "appointments": [
+    {
+      "patient_id": "001",
+      "patient_name": "Rahul Jeswani",
+      "pat_age": "23(yrs)",
+      "pat_injury": "Mild Knee osteoarthritis",
+      "session_date": "12/Jan/2023",
+      "session_time": "09:00 AM",
+      "session_dur": "23 min(s)",
+      "session_excount": "3/4"
+    },
+    {
+      "patient_id": "002",
+      "patient_name": "Sammera Reddy",
+      "pat_age": "23(yrs)",
+      "pat_injury": "Rahul Jeswani",
+      "session_date": "12/Jan/2023",
+      "session_time": "09:45 AM",
+      "session_dur": "37 min(s)",
+      "session_excount": "3/4"
+    },
+    {
+      "patient_id": "003",
+      "patient_name": "Rohit Gunj",
+      "pat_age": "23(yrs)",
+      "pat_injury": "Rahul Jeswani",
+      "session_date": "13/Jan/2023",
+      "session_time": "02:00 PM",
+      "session_dur": "23 min(s)",
+      "session_excount": "3/4"
+    }
+  ],
+  "empty": false
+}
