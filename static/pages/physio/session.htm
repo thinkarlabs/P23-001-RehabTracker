@@ -1,0 +1,37 @@
+{% extends "static/pages/_common/base.htm" %}
+
+{% block body %}
+<div id='x-main' class="container-full mt-5 p-3">
+<div class="container-md">
+
+	<div class="row">
+	<div class="col-12 p-2">
+		<h3 class="float-start ps-2">Select an Exercise</h3>
+		<button type="button" class="btn btn-primary float-end mx-2" data-nav='physio.sessions'>Complete Session</button>		
+	</div>
+	</div>
+			
+	<div id='x-contests' class="card-group d-flex">
+	{% for item in exercises %}
+		<div class="col-4 p-2">
+			<div class="card border-success mb-3">
+			  <div class="card-header bg-transparent border-success">
+			  <h5 class="card-title mt-2">{{item.ex_title}}</h5>
+			  
+			  </div>
+			  <div class="card-body text-success">
+				<img src="{{item.ex_pic}}" style="width:100%;height:220px;margin:0px;padding:0px" alt="...">				
+			  </div>
+			  <div class="card-footer bg-transparent border-success">
+			    <p class="card-title mt-2 float-start">{{item.ex_levels}}</p>
+				<button type="button" class="btn btn-primary btn-sm float-end mt-1" data-nav='physio.session.track'>Start</button>	
+			  </div>
+			</div>	
+		</div>
+	{% endfor %}
+	</div>
+
+
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends "static/pages/_common/base.htm" %}
+
+{% block body %}
+<div id='x-main' class="container-full mt-5 p-3">
+<div class="container-md">
+<div class="row">
+<div class="col-12 p-2">
+	<h3 class="float-start">Manage Patient</h3>
+	<button type="button" class="btn btn-primary float-end mx-2" data-nav='physio.patients'>Cancel</button>		
+	<button type="button" class="btn btn-primary float-end mx-2" data-nav='physio.patients'>Save</button>		
+</div>
+</div>
+<div id='x-challenge' class="container-float">
+
+	<div class="row">
+		<div class="col-6">
+		  <label for="exampleFormControlInput1">Name</label>
+		  <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+		</div>
+	  
+		<div class="col-3">
+		<label for="exampleFormControlInput1" class="ms-2">Gender</label>
+		<select id="level" class="form-select mx-2">
+		  <option selected>Gender</option>
+		  <option value="L1">Male</option>
+		  <option value="L2">Female</option>
+		  <option value="L3">Other</option>
+		</select>
+		</div>
+
+		<div class="col-3">
+		  <label for="exampleFormControlInput1">Age</label>
+		  <input type="number" class="form-control" id="exampleFormControlInput1" >
+		</div>
+
+		<div class="col-6 mt-3">
+		  <label for="exampleFormControlInput1">Contact Phone No</label>
+		  <input type="text" class="form-control" id="exampleFormControlInput1" >
+		</div>
+
+		<div class="col-6 mt-3">
+		  <label for="exampleFormControlInput1">Contact EMail ID</label>
+		  <input type="text" class="form-control" id="exampleFormControlInput1" >
+		</div>
+
+	</div>
+	
+	<div class="row my-3">
+	<h5 for="exampleFormControlInput1">Injury Details</h5>
+		<div class="col-6">
+		  <label for="exampleFormControlInput1">Select Injury</label>
+		<select id="level" class="form-select">
+		  <option selected></option>
+		  <option value="L1">Elderly Impaired balance</option>
+		  <option value="L2">Osteoarthritis</option>
+		  <option value="L3">Spinal Cord Injury</option>
+		</select>
+		</div>
+		<div class="col-3">
+		  <label for="exampleFormControlInput1">Planned Sessions</label>
+		  <input type="text" class="form-control" id="exampleFormControlInput1" >
+		</div>
+		<div class="col-3">
+		  <label for="exampleFormControlInput1">Completed Sessions</label>
+		  <input type="text" class="form-control" id="exampleFormControlInput1" disabled>
+		</div>
+
+	</div>
+
+	<div class="row my-3">
+		<div class="col-12">
+			<label for="exampleFormControlInput1">Description</label>
+			<textarea class="form-control"></textarea>
+		</div>
+	</div>
+
+</div>
+</div>
+{% endblock %}

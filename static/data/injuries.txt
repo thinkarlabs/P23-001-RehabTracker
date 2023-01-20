@@ -1,0 +1,25 @@
+{
+  "header": "Injuries",
+  "reference" : "https://www.physiotherapyexercises.com/home/collections",
+  "injuries": [
+    {
+      "injury_code": "S62.9",
+      "injury_title": "Elderly Impaired balance: Level 1",
+      "injury_aim": "The aim of the program is to increase balance and functional strength.",
+      "injury_desc": "Patient walks slowly and uses a walking frame. He feels unsteady when turning, reaching or when distracted."
+    },
+    {
+      "injury_code": "S12.3",
+      "injury_title": "Mild Knee osteoarthritis",
+      "injury_aim": "The aim of the program is to increase balance and functional strength.",
+      "injury_desc": "Patient has mild knee symptoms that are impacting her lifestyle.This program is suitable for someone with early stage (mild to moderate) knee osteoarthritis."
+    },
+    {
+      "injury_code": "S16.2",
+      "injury_title": "Spinal Cord Injury - C7-C8:strength/stretch/fitness",
+      "injury_aim": "The aim of the program is to increase balance and functional strength.",
+      "injury_desc": "Patient has complete C7 tetraplegia. He wants exercises that will help to maintain his physical health.This programme is suitable for people with C7-C8 tetraplegia."
+    }
+  ],
+  "empty": false
+}
