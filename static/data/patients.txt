@@ -1,0 +1,27 @@
+{
+  "header": "Applicants",
+  "patients": [
+    {
+      "pat_name": "Sunil Karanth",
+      "pat_gender": "Male",
+      "pat_age": "37",
+      "pat_injury": "Spinal Cord Injury",
+	  "pat_lastvisit": "02-Jan-2023"
+    },
+    {
+      "pat_name": "Junita Sharma",
+      "pat_gender": "Female",
+      "pat_age": "26",
+      "pat_injury": "Multiple Scerosis",
+	  "pat_lastvisit": "02-Jan-2023"
+    },
+    {
+      "pat_name": "Dodallamma",
+      "pat_gender": "Female",
+      "pat_age": "57",
+      "pat_injury": "Knee osteoarthritis",
+	  "pat_lastvisit": "02-Jan-2023"
+    }
+  ],  
+  "empty": false
+}

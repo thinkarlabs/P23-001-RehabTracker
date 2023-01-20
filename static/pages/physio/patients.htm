@@ -1,0 +1,53 @@
+{% extends "static/pages/_common/base.htm" %}
+
+{% block body %}
+<div id='x-main' class="container-full mt-5 p-3">
+<div class="container-md">
+
+	<div class="row">
+	<div class="col-12 p-2">
+		<h3 class="float-start ps-2">Patients</h3>
+		<button type="button" class="btn btn-primary float-end mx-2" data-nav='physio.patient.new'><i class="bi bi-plus-square"></i></button>		
+		<select id="level" class="form-select float-end mx-2" style="width:160px">
+		  <option selected>Injury</option>
+		  <option value="L1">Elderly Impaired balance</option>
+		  <option value="L2">Osteoarthritis</option>
+		  <option value="L3">Spinal Cord Injury</option>
+		</select>
+	</div>
+	
+	<div id='x-challenges'>
+		<table class="table" id="tbl_ch">
+		  <thead>
+			<tr>
+			  <th scope="col">Name</th>
+			  <th scope="col">Gender</th>
+			  <th scope="col">Age</th>
+			  <th scope="col">Injury</th>
+			  <th scope="col">Last Visit</th>
+			  <th scope="col" class="text-center">Action</th>
+			</tr>
+		  </thead>
+		  <tbody>
+		  {% for item in patients %}
+			<tr>
+			  <td>{{item.pat_name}}</td>
+			  <td>{{item.pat_gender}}</td>
+			  <td>{{item.pat_age}}</td>
+			  <td>{{item.pat_injury}}</td>
+			  <td>{{item.pat_lastvisit}}</td>
+			  <td class="col-2">
+				<button type="button" class="btn btn-primary float-end mx-2" data-nav='admin.exercise.del'><i class="bi bi-trash"></i></button>		  
+				<button type="button" class="btn btn-primary float-end mx-2" data-nav='admin.exercise.edit?memid="{{item.memid}}"'><i class="bi bi-pencil-square"></i></button>
+			  </td>
+			</tr>
+		  {% endfor %}
+		  </tbody>
+		</table>
+	</div>
+
+	
+	</div>
+</div>	
+</div>
+{% endblock %}
