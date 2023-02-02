@@ -6,7 +6,8 @@
 	  "ex_pic": "https://www.physiotherapyexercises.com/ExerciseImages/Drawings_Webp/Ex6014.webp",
 	  "ex_aim": "To stretch or maintain range in your shoulder.",
 	  "ex_Instructions": "Position yourself sitting in a chair with your hands clasped together on your lap. Raise your hands upwards to rest on the top of your head. Slide your hands behind your head as far as you can. Push your elbows back as far as you can. Return your hands to your lap.",
-	  "ex_levels": "Medium"
+	  "ex_levels": "Medium",
+	  "ex_page":"physio.session.track"
 	},
     {
 	  "ex_id": "01",
@@ -14,7 +15,8 @@
 	  "ex_pic": "https://www.physiotherapyexercises.com/ExerciseImages/Drawings_Webp/Ex0563.webp",
 	  "ex_aim": "To improve your ability to stand up or sit down.",
 	  "ex_Instructions": "Position yourself sitting with your feet underneath your knees. Practice standing up and sitting down. Ensure that your shoulders and knees move forward while you move between sitting and standing, and your weight is borne equally through both legs.",
-	  "ex_levels": "Easy"
+	  "ex_levels": "Easy",
+	  "ex_page":"physio.session.track.squats"
 	},
     {
 	  "ex_id": "01",
@@ -22,7 +24,8 @@
 	  "ex_pic": "https://www.physiotherapyexercises.com/ExerciseImages/Drawings_Webp/Ex1123.webp",
 	  "ex_aim": "To strengthen the muscles at the front and back of your thigh and to stretch or maintain range in your knee.",
 	  "ex_Instructions": "Position yourself sitting with your knees bent. Practice straightening your affected knee as much as possible while assisting with your unaffected leg, then bending your affected knee as much as possible while assisting with your unaffected leg.",
-	  "ex_levels": "Hard"
+	  "ex_levels": "Hard",
+	  "ex_page":"physio.session.track"
 	}
   ],
   "empty": false
