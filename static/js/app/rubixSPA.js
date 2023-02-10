@@ -1,6 +1,10 @@
 var debugLevel = 2; //1,2,3,4,5.
 
 function bind_events(){
+	$("[data-do]").on('click', function(e) {
+		x_do($(this).data('do'), $(this).data('form'));		
+	});
+
 	$("[data-nav]").on('click', function(e) {
 		x_nav($(this).data('nav'));		
 	});
@@ -42,7 +46,77 @@ function x_render(routeKey,json){
 	if (x_routes[routeKey].x_code !== undefined){loadScript(x_routes[routeKey].x_code)}
 	bind_events();
 }
+function x_do(_url, _formname){
+	routeKey = _url.split('/')[0]
+	params = _url.split('/')[1]
+	if (x_actions[routeKey] === undefined){x_log('Invalid Action Route..',1); return;}
+	
+	action_nav = x_actions[routeKey].x_go
+	action_url = x_actions[routeKey].x_do
+	if (params !== undefined) {action_url += '/' + params}
+	
 
+	if (x_actions[routeKey].x_act === 'post'){
+		const _form = document.getElementById(_formname);
+		x_post(_form, action_url,action_nav); 
+	}
+	if (x_actions[routeKey].x_act === 'del'){
+		x_del(action_url,action_nav); 
+	}
+}
+
+function x_post(_form, _url, _nav){	
+	formdata = getFormData($(_form));
+	$.ajax({
+      type: "POST",
+	  contentType: "application/json; charset=utf-8",
+      url: _url,
+      data: formdata,
+	  beforeSend:function(xhr) {
+       xhr.withCredentials=true;
+	   xhr.setRequestHeader('Authorization', 'Bearer '+localStorage.getItem("access_token"));
+	  },
+	  crossDomain: true
+    }).done(function (data) {
+		if(_url === '/user/login'){localStorage.setItem("access_token",data['access_token']);}
+		if(_url === '/user/logout'){localStorage.removeItem("access_token");}
+		if (data["msg"] === "Success"){
+			x_nav(_nav);
+		}
+		else{
+			x_nav("web.login");
+		}
+    });
+	
+}
+function x_del(_url, _nav){
+	if (confirm('Are you sure you want to delete this item?')){
+		$.ajax({
+		  type: "DELETE",
+		  contentType: "application/json; charset=utf-8",
+		  url: _url
+		}).done(function (data) {
+		    console.log(data);
+			if (data === "OK"){
+				x_nav(_nav);
+			}
+			else{
+				x_nav(_nav);
+			}		  
+		});
+	}
+}
+function getFormData($form) {
+	var unindexed_array = $form.serializeArray();
+	var indexed_array = {};
+	$.map(unindexed_array, function(n,i){
+		console.log (i);
+		indexed_array[n['name']] = n['value']
+	});
+	
+	jsonString = JSON.stringify(indexed_array);
+	return jsonString
+}
 //loaded_scripts = []
 
 function loadScript(scriptSource){
