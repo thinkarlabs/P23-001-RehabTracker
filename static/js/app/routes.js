@@ -14,4 +14,8 @@ let x_routes = {
   "physio.exercise.new": {x_page:"./static/pages/admin/contest.htm"}
 }
 
+let x_actions = {
+  "web.login": {x_act:"post",x_do:"/user/login",x_go:"physio.sessions"},
+  "web.logout": {x_act:"post",x_do:"/user/logout",x_go:"web.login"}
+}
 	
