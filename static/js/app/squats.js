@@ -1,21 +1,21 @@
-let capture;
-let posenet;
-let noseX, noseY;
-let singlePose, skeleton;
-let pics;
-let buttonS;
-let canvas
-let recorder
-let chunks = [];
-let recording_movement = []
-let stream;
-let videoURL;
-let PartXY = false;
-let Standind_HipY = false;
-let posi = "Down"
-let playing = false;
-let Total_Squats=0;
 var s1 = function(PoseStream) {
+ let capture;
+ let posenet;
+ let noseX, noseY;
+ let singlePose, skeleton;
+ let pics;
+ let buttonS;
+ let canvas
+ let recorder
+ let chunks = [];
+ let recording_movement = []
+ let stream;
+ let videoURL;
+ let PartXY = false;
+ let Standind_HipY = false;
+ let posi = "Down"
+ let playing = false;
+ let Total_Squats=0;
  PoseStream.setup = function() {
 	canvas = PoseStream.createCanvas(650,440);
     capture = PoseStream.createCapture(PoseStream.VIDEO)
@@ -42,7 +42,7 @@ var s1 = function(PoseStream) {
     chunks.length = 0;
 	Standind_HipY = false;
 	Total_Squats=0;
-    let stream = document.querySelector('canvas').captureStream(30),
+    stream = document.querySelector('canvas').captureStream(30);
     recorder = new MediaRecorder(stream);
     recorder.ondataavailable = function(e) {
       // Whenever data is available from the MediaRecorder put it in the array
