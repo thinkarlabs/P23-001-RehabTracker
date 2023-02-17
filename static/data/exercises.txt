@@ -7,7 +7,7 @@
 	  "ex_aim": "To stretch or maintain range in your shoulder.",
 	  "ex_Instructions": "Position yourself sitting in a chair with your hands clasped together on your lap. Raise your hands upwards to rest on the top of your head. Slide your hands behind your head as far as you can. Push your elbows back as far as you can. Return your hands to your lap.",
 	  "ex_levels": "Medium",
-	  "ex_page":"physio.session.track"
+	  "ex_page":"physio.session.track.shoulder"
 	},
     {
 	  "ex_id": "01",
