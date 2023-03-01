@@ -1,12 +1,16 @@
 var s1 = function(PoseStream) {
 	let capture;
 	let poseNet;
+	let poses;
 	let pose;
 	let skeleton;
-	let count = 0;
+	let skelt=true;
+	let armCount = 0;
+	let count =0;
 	let lastPose = "";
 	let canvas;
 	let buttonS;
+	let buttonC;
 	let recorder;
 	let chunks = [];
 	let recording_movement = [];
@@ -15,6 +19,10 @@ var s1 = function(PoseStream) {
 	let dist;
 	let brain;
 	let poseLabel = "";
+	let detectorConfig;
+	let detector;
+	let edges;
+	let highlightBack = false;
 	// Load PoseNet Model with ml5 wrapper
 	let poseNetOptions = {
 	  architecture: 'ResNet50',
@@ -23,22 +31,49 @@ var s1 = function(PoseStream) {
 	  // inputResolution: 193,
 	  inputResolution: 161
 	  }
-	PoseStream.setup = function() {
+	 PoseStream.init =async function() {
+	  detectorConfig = {modelType: poseDetection.movenet.modelType.SINGLEPOSE_THUNDER };
+	  detector = await poseDetection.createDetector(poseDetection.SupportedModels.MoveNet, detectorConfig);
+	  edges = {
+		'5,7': 'm',
+		'7,9': 'm',
+		'6,8': 'c',
+		'8,10': 'c',
+		'5,6': 'y',
+		'5,11': 'm',
+		'6,12': 'c',
+		'11,12': 'y',
+		'11,13': 'm',
+		'13,15': 'm',
+		'12,14': 'c',
+		'14,16': 'c'
+	  };
+	  await PoseStream.gotPoses();
+	}
+	PoseStream.videoReady = async function() {
+	  //console.log('video ready');
+	}
+	PoseStream.setup = async function() {
+	  var msg = new SpeechSynthesisUtterance('Loading,Arm UP Tracking. please wait ...');
+	  window.speechSynthesis.speak(msg);
 	  canvas = PoseStream.createCanvas(650,440);
-	  capture = PoseStream.createCapture(PoseStream.VIDEO)
+	  capture = PoseStream.createCapture(PoseStream.VIDEO);
 	  capture.elt.style = "display:block";
 	  capture.hide();
-	  //capture.elt.style = "display:block";
-	  poseNet = ml5.poseNet(capture,poseNetOptions,PoseStream.modelLoaded);
-	  poseNet.on('pose', PoseStream.gotPoses);
 	  buttonS = document.getElementById('mybutton');
-	  buttonS.addEventListener("click",PoseStream.record);
+	  buttonS.addEventListener("click", PoseStream.record);
+	  buttonC = document.getElementById('cbutton');
+	  buttonC.addEventListener("click",PoseStream.stopCapture);
+	  await PoseStream.init();
 	  PoseStream.armsUp();
+	}
+	PoseStream.stopCapture = function() {
+		capture.remove();
 	}
 	PoseStream.record = function() {
     chunks.length = 0;
 	//Standind_HipY = false;
-	//Total_Squats=0;
+	armCount=0;
     stream = document.querySelector('canvas').captureStream(30),
     recorder = new MediaRecorder(stream);
     recorder.ondataavailable = function(e) {
@@ -99,20 +134,110 @@ var s1 = function(PoseStream) {
   }
 
 
-	PoseStream.gotPoses=function(poses) {
-	  // console.log(poses);
+	PoseStream.gotPoses= async function() {
+	  poses = await detector.estimatePoses(capture.elt);
+	  //console.log(poses);
 	  if (poses.length > 0) {
-		pose = poses[0].pose;
-		skeleton = poses[0].skeleton;
+		pose = poses[0];
 	  }
+	  setTimeout(PoseStream.gotPoses, 0);
 	}
 
 	PoseStream.modelLoaded=function() {
 		console.log('poseNet ready');
 	}
 
+    PoseStream.draw=function() {
+	  PoseStream.background(220);
+	  PoseStream.translate(PoseStream.width, 0);
+	  if(poses && poses.length > 0){
+		  PoseStream.scale(-1, 1);
+		  PoseStream.image(capture, 0, 0, capture.width, capture.height);
+		  // Draw keypoints and skeleton
+		  PoseStream.drawKeypoints();
+		  if (skelt) {
+			PoseStream.drawSkeleton();
+		  }
+		  // Write text
+		  PoseStream.fill(255);
+		  PoseStream.strokeWeight(2);
+		  PoseStream.stroke(51);
+		  PoseStream.translate(PoseStream.width, 0);
+		  PoseStream.scale(-1, 1);
+		  PoseStream.textSize(15);
+
+		  if (poses && poses.length > 0) {
+			PoseStream.text("Position : "+poseLabel, 480, 60);
+			PoseStream.fill([0, 255, 0]);
+			PoseStream.text("Count : "+armCount, 480, 30);
+			//if(count < 17){
+				//PoseStream.fill([255, 0, 0]);
+				//PoseStream.text("Whole body not visible! ", 200,30);
+			//}
+		  }
+		  else {
+			PoseStream.text('Loading, please wait...', 100, 90);
+		  }
+		  
+		}
+	}
+	PoseStream.drawKeypoints=function() {
+	  count = 0;
+	  if (poses && poses.length > 0) {
+		for (let kp of poses[0].keypoints) {
+		  const { x, y, score } = kp;
+		  if (score > 0.3) {
+			count = count + 1;
+			PoseStream.fill(255);
+			PoseStream.stroke(0);
+			PoseStream.strokeWeight(4);
+			PoseStream.circle(x, y, 16);
+		  }
+		  if (count == 17) {
+			//console.log('Whole body visible!');
+		  }
+		  else {
+			//PoseStream.text("Whole body not visible!");
+		  }
+		  
+		  
+		}
+		//PoseStream.armsUp();
+	  }
+	}
+	PoseStream.drawSkeleton=function() {
+	  confidence_threshold = 0.5;
+
+	  if (poses && poses.length > 0) {
+		for (const [key, value] of Object.entries(edges)) {
+		  const p = key.split(",");
+		  const p1 = p[0];
+		  const p2 = p[1];
+
+		  const y1 = poses[0].keypoints[p1].y;
+		  const x1 = poses[0].keypoints[p1].x;
+		  const c1 = poses[0].keypoints[p1].score;
+		  const y2 = poses[0].keypoints[p2].y;
+		  const x2 = poses[0].keypoints[p2].x;
+		  const c2 = poses[0].keypoints[p2].score;
+		  if ((c1 > confidence_threshold) && (c2 > confidence_threshold)) {
+			if ((highlightBack == true) && ((p[1] == 11) || ((p[0] == 6) && (p[1] == 12)) || (p[1] == 13) || (p[0] == 12))) {
+			  PoseStream.strokeWeight(3);
+			  PoseStream.stroke(255, 0, 0);
+			  PoseStream.line(x1, y1, x2, y2);
+			}
+			else {
+			  PoseStream.strokeWeight(2);
+			  PoseStream.stroke('rgb(0, 255, 0)');
+			  PoseStream.line(x1, y1, x2, y2);
+			}
+		  }
+		}
+	  }
+	}
 	PoseStream.armsUp =function(){
 	  if (pose) {
+		//console.log("Inside Armup");
 		let confidenceThreshold = 0.3;
 		let downHeightTolerance = 150;
 		let upHeightTolerance = 70;
@@ -122,7 +247,7 @@ var s1 = function(PoseStream) {
 		function jointDistEvaluate(joint1, joint2, confidenceThreshold){
 		  let jointDist = null;
 		  if (pose.keypoints[joint1].score >= confidenceThreshold && pose.keypoints[joint2].score >= confidenceThreshold) {
-			jointDist = pose.keypoints[joint1].position.y - pose.keypoints[joint2].position.y;;
+			jointDist = pose.keypoints[joint1].y - pose.keypoints[joint2].y;
 		  } 
 		  return jointDist;
 		}
@@ -144,7 +269,7 @@ var s1 = function(PoseStream) {
 			//console.log("current: " + poseLabel);
 			//audio.play();
 			if (bothHandsUp()) { // check if both hands are up
-				count++;
+				armCount++;
 			  }
 			}
 			lastPose =  poseLabel
@@ -159,49 +284,6 @@ var s1 = function(PoseStream) {
 
 	  }
 	  setTimeout(PoseStream.armsUp, 100);
-	}
-  
-
-
-	PoseStream.draw=function() {
-	  PoseStream.push();
-	  PoseStream.translate(capture.width, 0);
-	  PoseStream.scale(-1, 1);
-	  PoseStream.image(capture, 0, 0, capture.width, capture.height);
-
-	  if (pose) {
-		for (let i = 0; i < skeleton.length; i++) {
-		  let a = skeleton[i][0];
-		  let b = skeleton[i][1];
-		  // strokeWeight(2);
-		  // stroke(0);
-		  PoseStream.strokeWeight(1.5);
-		  PoseStream.stroke(255,0,0);
-
-		  PoseStream.line(a.position.x, a.position.y, b.position.x, b.position.y);
-		}
-		for (let i = 0; i < pose.keypoints.length; i++) {
-		  let x = pose.keypoints[i].position.x;
-		  let y = pose.keypoints[i].position.y;
-		  // fill(0);
-		  // stroke(255);
-		  // ellipse(x, y, 16, 16);
-		  PoseStream.fill(0, 0, 0);
-		  PoseStream.ellipse(x, y, 10, 10);
-		}
-	  }
-	  PoseStream.pop();
-
-	  PoseStream.fill(255, 0, 255);
-	  PoseStream.noStroke();
-	  PoseStream.textSize(64);
-	  PoseStream.textAlign(PoseStream.CENTER, PoseStream.CENTER);
-	  PoseStream.text(count, 550, 370);
-	  PoseStream.fill(51);
-	  PoseStream.noStroke();
-	  PoseStream.textSize(50);
-	  PoseStream.textAlign(PoseStream.CENTER, PoseStream.CENTER);
-	  PoseStream.text(poseLabel, 550, 415);
 	}
 };
 new p5(s1);

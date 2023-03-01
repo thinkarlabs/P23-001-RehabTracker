@@ -28,7 +28,10 @@ function x_load(_url){
 		if (params !== undefined) {api_url += '?' + params}
 		
 		x_log(api_url,1);
-		$.getJSON(api_url).done(json => x_render(routeKey, json));
+		console.log(api_url);
+		$.ajaxSetup({ cache: false });
+		var noCache = Date();
+		$.getJSON(api_url ,{ "noCache": noCache }).done(json => x_render(routeKey, json));
 	}
 	else{
 		x_render(routeKey);
@@ -119,12 +122,18 @@ function getFormData($form) {
 }
 //loaded_scripts = []
 
-function loadScript(scriptSource){
+function loadScript(scriptSource){ 
 	//if (loaded_scripts.indexOf(scriptSource) === -1) {
-		var script = document.createElement('script');
-		script.src = scriptSource;
-		document.body.appendChild(script);
-		//loaded_scripts.push(scriptSource);
+	//var links = scriptSource.split("&");
+	//var script ="";
+	//var arrayLength = links.length;
+	//for (var i = 0; i < arrayLength; i++) {
+	//var myDate = new Date().toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
+	var script = document.createElement('script');
+	script.src = scriptSource;//+"?_="+myDate;
+	document.body.appendChild(script);
+	//}
+
 	//}
 
 }
