@@ -9,6 +9,7 @@ let x_routes = {
   "physio.session.track": {x_page:"./static/pages/physio/track.htm?v0.01",x_code:"/static/js/app/script4.js"},
   "physio.session.track.squats": {x_page:"./static/pages/physio/track.htm?v0.01",x_code:"/static/js/app/squats.js"},
   "physio.session.track.shoulder": {x_page:"./static/pages/physio/track.htm?v0.01",x_code:"/static/js/app/exercise_armup.js"},
+  "physio.session.track.kneelift": {x_page:"./static/pages/physio/track.htm?v0.01",x_code:"/static/js/app/kneelift.js"},
   "physio.patients": {x_api : "/static/data/patients.txt",x_page:"./static/pages/physio/patients.htm?v0.01"},
   "physio.patient.new": {x_page:"./static/pages/physio/patient.htm"},
   "physio.exercises": {x_api : "/static/data/exercises.txt?v1a", x_page:"./static/pages/physio/exercises.htm"},

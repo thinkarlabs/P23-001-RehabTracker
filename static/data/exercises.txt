@@ -25,7 +25,7 @@
 	  "ex_aim": "To strengthen the muscles at the front and back of your thigh and to stretch or maintain range in your knee.",
 	  "ex_Instructions": "Position yourself sitting with your knees bent. Practice straightening your affected knee as much as possible while assisting with your unaffected leg, then bending your affected knee as much as possible while assisting with your unaffected leg.",
 	  "ex_levels": "Hard",
-	  "ex_page":"physio.session.track"
+	  "ex_page":"physio.session.track.kneelift"
 	}
   ],
   "empty": false
