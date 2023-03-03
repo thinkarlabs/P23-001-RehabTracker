@@ -59,7 +59,13 @@ def user_signup(user: UserSchema = Body(default=None)):
     return {"status_code":status.HTTP_409_CONFLICT,"Info":"Therapist Record Not Saved","msg":"Fail"}
     
 def check_user(data: UserLoginSchema):
-    details = userLoginEntity(UserLogin.find_one({"email":data.email}))
+    details=""
+    try:
+        details = userLoginEntity(UserLogin.find_one({"email":data.email}))
+    except Exception as e:
+        print("Exception In user:check_user()")
+        print(e)
+        return False
     if details['email'] == data.email and verify_password(data.password,details['password']):
         return True
     return False
@@ -71,7 +77,7 @@ def user_login(request: Request,response: Response,user: UserLoginSchema=Body(de
         #response.set_cookie(key="access_token",value=f"Bearer {token['access token']}", httponly=True,samesite='none')
         return {"access_token": token['access token'], "token_type": "bearer","msg":"Success"}
     else:
-        return {"status_code":status.HTTP_401_UNAUTHORIZED,"error":"Invalid Login"}
+        return {"status_code":status.HTTP_401_UNAUTHORIZED,"error":"Invalid Login","msg":"Fail"}
         
 @sign.post("/logout",dependencies=[Depends(jwtBearer())],tags=["user"])
 def user_logout(response: Response):
