@@ -1,27 +1,21 @@
 from pydantic import BaseModel , Field , EmailStr
 from fastapi import Form
-class PostSchema(BaseModel):
-    id:int = Field(default=None)
-    title: str = Field(default=None)
-    content:str = Field(default=None)
-    class Config:
-        schema_extra ={
-            "post_demo":{
-                "title":"Some animal",
-                "content":"Content about some animal"
-            }
-        }
         
 class UserSchema(BaseModel):
-    fullname : str =Field(default=None)
+    name: str =Field(default=None)
     email : EmailStr = Field(default=None)
-    password : str = Field(default=None)
+    password : str = Field(default=None,min_length=8)
+    hospital: str =Field(default=None)
+    hcode: str =Field(default=None)
+    active: bool = Field(default=True)
     class Config :
         user_schema ={
             "uesr_demo":{
                 "name":"Thandava",
                 "email":"thandavagupta@gmail.com",
-                "password":"123"
+                "password":"123",
+                "hospital":"hospital_name",
+                "active":True
             }
         }
         
