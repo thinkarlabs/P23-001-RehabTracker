@@ -18,7 +18,7 @@ function x_nav(_route){
 	x_load(_route);
 }
 
-function x_load(_url){
+function x_load(_url,_formname){
 	//A RouteKey can have an an x-api to call, x-page to render,x-event to raise and a x-div to load page to.
 	routeKey = _url.split('?')[0]
 	params = _url.split('?')[1]
@@ -28,10 +28,21 @@ function x_load(_url){
 		if (params !== undefined) {api_url += '?' + params}
 		
 		x_log(api_url,1);
-		console.log(api_url);
-		$.ajaxSetup({ cache: false });
-		var noCache = Date();
-		$.getJSON(api_url ,{ "noCache": noCache }).done(json => x_render(routeKey, json));
+		if (api_url === '/patient' || x_routes[routeKey].x_api==='/patients'){
+
+			
+			if (x_routes[routeKey].x_api==='/patients'){
+				api_url = api_url.split('?');
+				api_url = api_url[0]+"/"+api_url[1].slice(1,17);
+				
+			}
+			console.log(api_url);
+			x_get(api_url,routeKey); 
+		}
+		else{
+			$.getJSON(api_url).done(json => x_render(routeKey, json));
+		}
+		
 	}
 	else{
 		x_render(routeKey);
@@ -64,8 +75,12 @@ function x_do(_url, _formname){
 		x_post(_form, action_url,action_nav); 
 	}
 	if (x_actions[routeKey].x_act === 'del'){
-		x_del(action_url,action_nav); 
+		x_del(action_url,action_nav,_formname); 
 	}
+	if (x_actions[routeKey].x_act === 'get'){
+		x_get(action_url,action_nav); 
+	}
+	
 }
 
 function x_post(_form, _url, _nav){	
@@ -92,19 +107,73 @@ function x_post(_form, _url, _nav){
     });
 	
 }
-function x_del(_url, _nav){
+
+function x_get(_url,routeKey){	
+	$.ajax({
+      type: "GET",
+	  contentType: "application/json; charset=utf-8",
+      url: _url,
+	  beforeSend:function(xhr) {
+       xhr.withCredentials=true;
+	   xhr.setRequestHeader('Authorization', 'Bearer '+localStorage.getItem("access_token"));
+	  },
+	  crossDomain: true
+    }).done(function (data) {
+		if(_url === '/user/login'){localStorage.setItem("access_token",data['access_token']);}
+		if(_url === '/user/logout'){localStorage.removeItem("access_token");}
+		if (data["msg"] === "Success"){
+			x_render(routeKey, data);
+		}
+		else{
+			x_nav("web.login");
+		}
+    });
+	
+}
+
+function x_put(_form, _url, _nav){	
+	formdata = getFormData($(_form));
+	$.ajax({
+      type: "PUT",
+	  contentType: "application/json; charset=utf-8",
+      url: _url,
+      data: formdata,
+	  beforeSend:function(xhr) {
+       xhr.withCredentials=true;
+	   xhr.setRequestHeader('Authorization', 'Bearer '+localStorage.getItem("access_token"));
+	  },
+	  crossDomain: true
+    }).done(function (data) {
+		if(_url === '/user/login'){localStorage.setItem("access_token",data['access_token']);}
+		if(_url === '/user/logout'){localStorage.removeItem("access_token");}
+		if (data["msg"] === "Success"){
+			x_nav(_nav);
+		}
+		else{
+			x_nav("web.login");
+		}
+    });
+	
+}
+
+function x_del(_url, _nav,params){
 	if (confirm('Are you sure you want to delete this item?')){
 		$.ajax({
 		  type: "DELETE",
 		  contentType: "application/json; charset=utf-8",
-		  url: _url
+		  url: _url+"/"+params,
+		  beforeSend:function(xhr) {
+			xhr.withCredentials=true;
+			xhr.setRequestHeader('Authorization', 'Bearer '+localStorage.getItem("access_token"));
+		   },
+		   crossDomain: true
 		}).done(function (data) {
 		    console.log(data);
-			if (data === "OK"){
+			if (data["msg"] === "Success"){
 				x_nav(_nav);
 			}
 			else{
-				x_nav(_nav);
+				x_nav("web.login");
 			}		  
 		});
 	}
@@ -120,22 +189,12 @@ function getFormData($form) {
 	jsonString = JSON.stringify(indexed_array);
 	return jsonString
 }
-//loaded_scripts = []
+
 
 function loadScript(scriptSource){ 
-	//if (loaded_scripts.indexOf(scriptSource) === -1) {
-	//var links = scriptSource.split("&");
-	//var script ="";
-	//var arrayLength = links.length;
-	//for (var i = 0; i < arrayLength; i++) {
-	//var myDate = new Date().toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
 	var script = document.createElement('script');
-	script.src = scriptSource;//+"?_="+myDate;
+	script.src = scriptSource;
 	document.body.appendChild(script);
-	//}
-
-	//}
-
 }
 window.addEventListener('popstate', onPopState);
 

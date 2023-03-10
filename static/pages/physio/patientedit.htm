@@ -7,41 +7,44 @@
 <div class="col-12 p-2">
 	<h3 class="float-start">Manage Patient</h3>
 	<button type="button" class="btn btn-primary float-end mx-2" data-nav='physio.patients'>Cancel</button>		
-	<button type="button" class="btn btn-primary float-end mx-2" data-do='web.patientA' data-form="addpatientform">Save</button>		
+	<button type="button" class="btn btn-primary float-end mx-2" data-do='web.patientE' data-form="updatepatientform">Update</button>		
 </div>
 </div>
-<form method="post" id="addpatientform">
+<form method="post" id="updatepatientform">
+    {% for item in patients %}
+    
 <div id='x-challenge' class="container-float">
 
 	<div class="row">
 		<div class="col-6">
 		  <label for="exampleFormControlInput1">Name</label>
-		  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Enter Your Name" name="name">
+          <input type="hidden" class="form-control" id="exampleFormControlInput44"  name="p_id" value="{{item.p_Id}}">
+		  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Enter Your Name" name="name" value="{{item.name}}">
 		</div>
 	  
 		<div class="col-3">
 		<label for="exampleFormControlInput1" class="ms-2">Gender</label>
-		<select id="level" class="form-select mx-2" name="gender">
-		  <option selected>Gender</option>
-		  <option value="M">Male</option>
-		  <option value="F">Female</option>
-		  <option value="O">Other</option>
+		<select id="level"  class="form-select mx-2" name="gender">
+		  <option  value="{{item.gender}}" selected>{{item.gender}}</option>
+		  <option value="M">M</option>
+		  <option value="F">F</option>
+		  <option value="O">O</option>
 		</select>
 		</div>
 
 		<div class="col-3">
 		  <label for="exampleFormControlInput1">Age</label>
-		  <input type="number" class="form-control" id="exampleFormControlInput1" name="age" >
+		  <input type="number" class="form-control" id="exampleFormControlInput1" name="age" value="{{item.age}}">
 		</div>
 
 		<div class="col-6 mt-3">
 		  <label for="exampleFormControlInput1">Contact Phone No</label>
-		  <input type="text" class="form-control" id="exampleFormControlInput1" name="contact_number">
+		  <input type="text" class="form-control" id="exampleFormControlInput1" name="contact_number" value="{{item.contact_number}}">
 		</div>
 
 		<div class="col-6 mt-3">
 		  <label for="exampleFormControlInput1">Contact EMail ID</label>
-		  <input type="text" class="form-control" id="exampleFormControlInput1" name="email_id">
+		  <input type="text" class="form-control" id="exampleFormControlInput1" name="email_id" value="{{item.email}}">
 		</div>
 
 	</div>
@@ -50,16 +53,16 @@
 	<h5 for="exampleFormControlInput1">Injury Details</h5>
 		<div class="col-6">
 		  <label for="exampleFormControlInput1">Select Injury</label>
-		<select id="level" class="form-select" name="injury_type">
-		  <option selected></option>
-		  <option value="Elderly Impaired balance">Elderly Impaired balance</option>
-		  <option value="Osteoarthritis">Osteoarthritis</option>
+		<select id="level" class="form-select" name="injury_type" >
+          <option selected value="{{item.injury_type}}">{{item.injury_type}}</option> 
+          <option value="Osteoarthritis">Osteoarthritis</option>
+          <option value="Elderly Impaired balance">Elderly Impaired balance</option>
 		  <option value="Spinal Cord Injury">Spinal Cord Injury</option>
 		</select>
 		</div>
 		<div class="col-3">
 		  <label for="exampleFormControlInput1">Planned Sessions</label>
-		  <input type="text" class="form-control" id="exampleFormControlInput1" name="planned_sessions" >
+		  <input type="text" class="form-control" id="exampleFormControlInput1" name="planned_sessions" value="{{item.planned_sessions}}">
 		</div>
 		<div class="col-3">
 		  <label for="exampleFormControlInput1">Completed Sessions</label>
@@ -71,9 +74,10 @@
 	<div class="row my-3">
 		<div class="col-12">
 			<label for="exampleFormControlInput1">Description</label>
-			<textarea class="form-control" name="discription"></textarea>
+			<textarea class="form-control" name="discription" >{{item.description}}</textarea>
 		</div>
 	</div>
+    {% endfor %}
 </form>
 </div>
 </div>

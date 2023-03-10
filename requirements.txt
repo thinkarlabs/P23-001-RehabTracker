@@ -5,3 +5,4 @@ fastapi
 uvicorn
 pyjwt[crypto]
 pydantic[email]
+passlib[bcrypt]

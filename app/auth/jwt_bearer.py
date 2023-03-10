@@ -2,7 +2,9 @@ from fastapi import Request, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from .jwt_handler import decodeJWT
 
+loginuser=0
 class jwtBearer(HTTPBearer):
+
     def __init__(self, auto_Error: bool = True):
         super(jwtBearer,self).__init__(auto_error=auto_Error)
         
@@ -22,6 +24,10 @@ class jwtBearer(HTTPBearer):
         isTokenValid : bool = False
         payload = decodeJWT(jwtoken)
         if payload:
+            global loginuser 
+            loginuser = payload["userID"]
             isTokenValid = True
         return isTokenValid
-            
+    
+def get_current_user():
+    return loginuser
