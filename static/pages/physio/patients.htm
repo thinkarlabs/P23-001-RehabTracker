@@ -31,14 +31,14 @@
 		  <tbody>
 		  {% for item in patients %}
 			<tr>
-			  <td>{{item.pat_name}}</td>
-			  <td>{{item.pat_gender}}</td>
-			  <td>{{item.pat_age}}</td>
-			  <td>{{item.pat_injury}}</td>
-			  <td>{{item.pat_lastvisit}}</td>
+			  <td>{{item.name}}</td>
+			  <td>{{item.gender}}</td>
+			  <td>{{item.age}}</td>
+			  <td>{{item.injury_type}}</td>
+			  <td>{{item.Last_Visit}}</td>
 			  <td class="col-2">
-				<button type="button" class="btn btn-primary float-end mx-2" data-nav='admin.exercise.del'><i class="bi bi-trash"></i></button>		  
-				<button type="button" class="btn btn-primary float-end mx-2" data-nav='admin.exercise.edit?memid="{{item.memid}}"'><i class="bi bi-pencil-square"></i></button>
+				<button type="button" class="btn btn-primary float-end mx-2" data-do="web.patientD" data-form="{{item.p_Id}}"><i class="bi bi-trash"></i></button>  
+				<button type="button" class="btn btn-primary float-end mx-2" data-nav='physio.patient.edit?"{{item.p_Id}}"'><i class="bi bi-pencil-square"></i></button>
 			  </td>
 			</tr>
 		  {% endfor %}
