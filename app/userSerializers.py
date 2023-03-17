@@ -67,3 +67,42 @@ def updatePatientEntity(patient) -> dict:
         "Total_sessions":patient["planned_sessions"],
         "p_description":patient["discription"]
     }
+
+def addInjuryEntity(Injury) -> dict:
+        return {
+        "i_title":Injury["Title"],
+        "i_aim": Injury["Aim"],
+        "i_description": Injury["Description"],
+        "i_exercises" :  Injury["Exercises"]
+    } 
+
+def getInjuryEntity(Injury) -> list:
+    result=[]
+    for injuries in Injury:
+        result.append({
+            "title":injuries["i_title"],
+            "aim":injuries["i_aim"],
+            "description":injuries["i_description"],
+            "i_Id":injuries["injuryId"]
+          })
+    return result
+
+def getOneInjuryEntity(Injury) -> list:
+    result=[]
+    for injuries in Injury:
+        result.append({
+            "title":injuries["i_title"],
+            "aim":injuries["i_aim"],
+            "description":injuries["i_description"],
+            "i_Id":injuries["injuryId"],
+            "exercises":injuries["i_exercises"]
+          })
+    return result
+
+def updateInjuryEntity(Injury) -> dict:
+        return {
+        "injuryId":Injury["i_id"],
+        "i_title":Injury["Title"],
+        "i_aim": Injury["Aim"],
+        "i_description": Injury["Description"]
+    }
