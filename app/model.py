@@ -80,3 +80,33 @@ class UpdatePatientSchema(BaseModel):
                 "discription":"Description about John's injury",
             }
         }
+
+class addInjuriesSchema(BaseModel):
+    Title : str = Field(default=None)
+    Aim : str = Field(default=None)
+    Description : str = Field(default=None)
+    Exercises : str = Field(default=None)
+    class Config:
+        schema_extra ={ 
+            "add_demo":
+            {   "Title":"John",
+                "Aim":"",
+                "Description":"Male",
+                "Exercises": "[]"
+            }
+        }
+
+class UpdateInjurySchema(BaseModel):
+    i_id : str = Field(default=None)
+    Title : str = Field(default=None)
+    Aim : str = Field(default=None)
+    Description : str = Field(default=None)
+    class Config:
+        schema_extra ={
+            "add_demo":{
+                "i_id":"I-TPRANDM-RANDOM",
+                "Title":"",
+                "Aim":"",
+                "Description":"",
+            }
+        }

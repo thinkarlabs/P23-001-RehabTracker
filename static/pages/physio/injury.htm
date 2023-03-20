@@ -8,20 +8,20 @@
 	<div class="row">
 
 	<h3 class="float-start">Manage Injury</h3>
-
+	<form method="post" id="addinjuryform">
 	<div class="col-8">
 	  <div class="row">
 		<div class="col-12">
 		  <label for="exampleFormControlInput1">Title</label>
-		  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="">
+		  <input type="text" class="form-control" id="exampleFormControlInput1" name = "Title"placeholder="">
 		</div>
 		<div class="col-12">
 		  <label for="exampleFormControlInput1">Aim</label>
-		  <textarea type="text" class="form-control" id="exampleFormControlInput1" placeholder=""></textarea>
+		  <textarea type="text" class="form-control" id="exampleFormControlInput1" name = "Aim" placeholder=""></textarea>
 		</div>
 		<div class="col-12">
 		  <label for="exampleFormControlInput1">Description</label>
-		  <textarea type="text" class="form-control" id="exampleFormControlInput1" placeholder=""></textarea>
+		  <textarea type="text" class="form-control" id="exampleFormControlInput1" name = "Description" placeholder=""></textarea>
 		</div>
 	  </div>
 	</div>
@@ -31,21 +31,19 @@
 		<ul class="list-group">
 		{% for item in exercises %}
 		  <li class="list-group-item">
-			<input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
+			<input class="form-check-input me-1" type="checkbox" value="{{item.ex_title}}" name = "exercise{{ loop.index }}" aria-label="...">
 			{{item.ex_title}}
 		  </li>
 		{% endfor %}
 		</ul>
-
 	</div>
-
+</form>
 <div class="row">
 <div class="col-12 p-2">
-	<button type="button" class="btn btn-primary float-end mx-2" data-nav="physio.injuries">Save</button>		
+	<button type="button" class="btn btn-primary float-end mx-2" data-do="web.injuriesA" data-form="addinjuryform">Save</button>		
 	<button type="button" class="btn btn-primary float-end mx-2" data-nav="physio.injuries">Cancel</button>		
 </div>
 </div>
-
 </div>
 </div>
 </div>

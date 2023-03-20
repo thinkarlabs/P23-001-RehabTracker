@@ -1,8 +1,9 @@
 let x_routes = {
   //"route": {x_api: "", x_page:"", x_div:"",x_code:""}
   "web.login": {x_page:"./static/pages/login.htm?v0.01"},
-  "physio.injuries": {x_api : "/static/data/injuries.txt?v3",x_page:"./static/pages/physio/injuries.htm?v1",x_code:"/static/pages/physio/injuries.js"},
+  "physio.injuries": {x_api : "/injuries",x_page:"./static/pages/physio/injuries.htm?v1",x_code:"/static/pages/physio/injuries.js"},
   "physio.injury.new": {x_api : "/static/data/exercises.txt?v1a",x_page:"./static/pages/physio/injury.htm"},
+  "physio.injury.edit": {x_api : "/injury",x_page:"./static/pages/physio/injuryedit.htm"},
   "physio.sessions": {x_page:"./static/pages/physio/sessions.htm"},
   "physio.session.list": {x_api : "/static/data/schedule.txt",x_div:"ses_det",x_page:"./static/pages/physio/session_det.htm?v0.01"},
   "physio.session.new": {x_api : "/static/data/exercises.txt?v1a",x_page:"./static/pages/physio/session.htm?v0.01"},
@@ -22,7 +23,9 @@ let x_actions = {
   "web.logout": {x_act:"post",x_do:"/user/logout",x_go:"web.login"},
   "web.patientD":{x_act:"del",x_do:"/patient",x_go:"physio.patients"},
   "web.patientA":{x_act:"post",x_do:"/patient",x_go:"physio.patients"},
-  "web.patientE":{x_act:"post",x_do:"/editpatient",x_go:"physio.patients"}
-  
+  "web.patientE":{x_act:"post",x_do:"/editpatient",x_go:"physio.patients"},
+  "web.injuries": {x_act:"del",x_do:"/injuries",x_go:"physio.injuries"},
+  "web.injuriesA": {x_act:"post",x_do:"/injuries",x_go:"physio.injuries"},
+  "web.injuriesE": {x_act:"post",x_do:"/editinjury",x_go:"physio.injuries"}
+
 }
-	

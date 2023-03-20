@@ -28,12 +28,12 @@ function x_load(_url,_formname){
 		if (params !== undefined) {api_url += '?' + params}
 		
 		x_log(api_url,1);
-		if (api_url === '/patient' || x_routes[routeKey].x_api==='/patients'){
+		if (api_url === '/patient' || x_routes[routeKey].x_api==='/patients' || api_url === '/injuries' || x_routes[routeKey].x_api === '/injury'){
 
 			
-			if (x_routes[routeKey].x_api==='/patients'){
+			if (x_routes[routeKey].x_api==='/patients' || x_routes[routeKey].x_api === '/injury'){
 				api_url = api_url.split('?');
-				api_url = api_url[0]+"/"+api_url[1].slice(1,17);
+				api_url = api_url[0]+"/"+api_url[1].substring(1, api_url[1].length-1);
 				
 			}
 			console.log(api_url);
@@ -85,6 +85,7 @@ function x_do(_url, _formname){
 
 function x_post(_form, _url, _nav){	
 	formdata = getFormData($(_form));
+	console.log(formdata);
 	$.ajax({
       type: "POST",
 	  contentType: "application/json; charset=utf-8",

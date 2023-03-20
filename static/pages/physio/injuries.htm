@@ -23,12 +23,12 @@
 		  <tbody>
 		  {% for item in injuries %}
 			<tr>
-			  <td>{{item.injury_title}}</td>
-			  <td>{{item.injury_aim}}</td>
-			  <td>{{item.injury_desc}}</td>
+			  <td>{{item.title}}</td>
+			  <td>{{item.aim}}</td>
+			  <td>{{item.description}}</td>
 			  <td class="col-2">
-				<button type="button" class="btn btn-primary float-end mx-2" data-nav='admin.exercise.del'><i class="bi bi-trash"></i></button>		  
-				<button type="button" class="btn btn-primary float-end mx-2" data-nav='admin.exercise.edit?memid="{{item.memid}}"'><i class="bi bi-pencil-square"></i></button>
+				<button type="button" class="btn btn-primary float-end mx-2" data-do="web.injuries" data-form = "{{item.i_Id}}"><i class="bi bi-trash"></i></button>		  
+				<button type="button" class="btn btn-primary float-end mx-2" data-nav='physio.injury.edit?"{{item.i_Id}}"'><i class="bi bi-pencil-square"></i></button>
 			  </td>
 			</tr>
 		  {% endfor %}
