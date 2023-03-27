@@ -23,6 +23,8 @@ var s1 = function(PoseStream) {
 	let detector;
 	let edges;
 	let highlightBack = false;
+	let stopped= false;
+	let record_start =0
 	// Load PoseNet Model with ml5 wrapper
 	let poseNetOptions = {
 	  architecture: 'ResNet50',
@@ -64,11 +66,23 @@ var s1 = function(PoseStream) {
 	  buttonS.addEventListener("click", PoseStream.record);
 	  buttonC = document.getElementById('cbutton');
 	  buttonC.addEventListener("click",PoseStream.stopCapture);
+	  //buttonC.addEventListener("click",stopped=true);
 	  await PoseStream.init();
 	  PoseStream.armsUp();
 	}
 	PoseStream.stopCapture = function() {
+		stopped = true;
+		var code = '<form method="post" >' +
+				'<input type="text" class="form-control" id="patientDetails" name="p_id" value="'+localStorage.getItem("current_patient")+'" hidden>'+
+				'<input type="text" class="form-control" id="patientDetails" name="start" value="'+record_start+'" hidden>'+
+				'<input type="text" class="form-control" id="patientDetails" name="exercise" value="armup" hidden>'+
+				'<input type="text" class="form-control" id="patientDetails" name="end" value="'+new Date().getTime()+'" hidden>'+
+				"<input type='text' class='form-control' id='patientDetails' name='poses' value='"+JSON.stringify(recording_movement)+"' hidden>"+
+				'</form>' + 
+		
+			//alert("session started");
 		capture.remove();
+		x_post(code,'/addexercisesession','physio.session.new')
 	}
 	PoseStream.record = function() {
     chunks.length = 0;
@@ -79,6 +93,8 @@ var s1 = function(PoseStream) {
     recorder.ondataavailable = function(e) {
       // Whenever data is available from the MediaRecorder put it in the array
       chunks.push(e.data);
+	  //console.log(poses[0])
+	  recording_movement.push(poses[0]);
     };
     recorder.onstop = function(e) {
       var viddiv = document.getElementById('right');
@@ -96,10 +112,11 @@ var s1 = function(PoseStream) {
       videoURL = window.URL.createObjectURL(blob);
       // Make the video element source point to that URL
       video.src = videoURL;
-      PoseStream.saveJSON(recording_movement, 'Frame.json');
-      recording_movement = [];
+      //PoseStream.saveJSON(recording_movement, 'Frame.json');
+      //recording_movement = [];
     };
     recorder.start();
+	record_start = new Date().getTime();
     PartXY = true;
 	document.getElementById("mybutton").style.display = "none";
 	var pbutton = document.getElementById('pauser');

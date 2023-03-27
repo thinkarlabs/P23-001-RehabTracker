@@ -1,3 +1,5 @@
+from datetime import datetime,date,timedelta,timezone
+import json
 def userLoginEntity(user) -> dict:
     return {
         "email": user["email"],
@@ -105,4 +107,34 @@ def updateInjuryEntity(Injury) -> dict:
         "i_title":Injury["Title"],
         "i_aim": Injury["Aim"],
         "i_description": Injury["Description"]
+    }
+    
+def getSessionsEntity(sessions) -> list:
+    result=[]
+    for session in sessions:
+        result.append({
+            "session_date":session["date"].strftime("%d-%m-%Y %H:%M"),
+            "session_dur":"{}:{}".format(int(((session["date"]-session["end"]).total_seconds()//60)//60),int(((session["date"]-session["end"]).total_seconds()//60) % 60)),
+            "session_excount":len(session["exercises"]),
+            "session_observer":set([i["Observer"] for i in session["exercises"]]),
+            "p_Id":session["p_id"]
+          })
+    return result
+    
+def getOneExercise(patient) -> dict:
+    ist_offset = timedelta(hours=5, minutes=30)
+    # Create a timezone object with the UTC offset
+    ist = timezone(ist_offset)
+    #From front end we are getting timestamp in UTC . Here we are coverting it to IST
+    sdate=datetime.utcfromtimestamp(int(patient["start"])/ 1000).replace(tzinfo=timezone.utc)
+    sdate_ist = sdate.astimezone(ist)
+    edate=datetime.utcfromtimestamp(int(patient["end"])/ 1000).replace(tzinfo=timezone.utc)
+    edate_ist = edate.astimezone(ist)
+    return {
+        "patientId":patient["p_id"],
+        "exercise":patient["exercise"],
+        "timefrom": sdate_ist,
+        "timeto": edate_ist,
+        "url":"Under Implementation",
+        "poses": json.loads(patient["poses"])
     }
