@@ -22,21 +22,18 @@ function x_load(_url,_formname){
 	//A RouteKey can have an an x-api to call, x-page to render,x-event to raise and a x-div to load page to.
 	routeKey = _url.split('?')[0]
 	params = _url.split('?')[1]
-
 	if (x_routes[routeKey].x_api !== undefined){
 		var api_url = x_routes[routeKey].x_api
 		if (params !== undefined) {api_url += '?' + params}
 		
 		x_log(api_url,1);
-		if (api_url === '/patient' || x_routes[routeKey].x_api==='/patients'){
-
+		if (api_url === '/patient' || x_routes[routeKey].x_api==='/patients' || x_routes[routeKey].x_api==='/getsession'){
 			
-			if (x_routes[routeKey].x_api==='/patients'){
+			if (x_routes[routeKey].x_api==='/patients' || x_routes[routeKey].x_api==='/getsession'){
 				api_url = api_url.split('?');
-				api_url = api_url[0]+"/"+api_url[1].slice(1,17);
+				api_url = api_url[0]+"/"+api_url[1].substring(1, api_url[1].length-1);
 				
 			}
-			console.log(api_url);
 			x_get(api_url,routeKey); 
 		}
 		else{
@@ -83,8 +80,9 @@ function x_do(_url, _formname){
 	
 }
 
-function x_post(_form, _url, _nav){	
+function x_post(_form, _url, _nav){
 	formdata = getFormData($(_form));
+	//console.log(formdata);
 	$.ajax({
       type: "POST",
 	  contentType: "application/json; charset=utf-8",
@@ -122,7 +120,9 @@ function x_get(_url,routeKey){
 		if(_url === '/user/login'){localStorage.setItem("access_token",data['access_token']);}
 		if(_url === '/user/logout'){localStorage.removeItem("access_token");}
 		if (data["msg"] === "Success"){
+			if(routeKey){
 			x_render(routeKey, data);
+			}
 		}
 		else{
 			x_nav("web.login");
@@ -182,7 +182,6 @@ function getFormData($form) {
 	var unindexed_array = $form.serializeArray();
 	var indexed_array = {};
 	$.map(unindexed_array, function(n,i){
-		console.log (i);
 		indexed_array[n['name']] = n['value']
 	});
 	
@@ -206,4 +205,29 @@ function onPopState(e) {
 
 function x_log(s,f){
 	if (f <= debugLevel) console.log(s);
+}
+
+function attachidtoButton(){
+	//console.log("hey",document.getElementById("getpdetailsbutton").attributes["data-nav"].value);
+	fld = document.getElementById('getpdetailsbutton').attributes['data-nav'].value.split('?')[0]+'?';
+	document.getElementById("getpdetailsbutton").attributes["data-nav"].value = fld+'"'+document.getElementById("getpdetails").value+'"';
+}
+
+function myFunction() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+function filterFunction() {
+  var input, filter, ul, li, a, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  div = document.getElementById("myDropdown");
+  a = div.getElementsByTagName("a");
+  for (i = 0; i < a.length; i++) {
+    txtValue = a[i].textContent || a[i].innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      a[i].style.display = "";
+    } else {
+      a[i].style.display = "none";
+    }
+  }
 }

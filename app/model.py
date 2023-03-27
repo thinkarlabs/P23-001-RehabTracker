@@ -80,3 +80,18 @@ class UpdatePatientSchema(BaseModel):
                 "discription":"Description about John's injury",
             }
         }
+        
+class addSessionExSchema(BaseModel):
+    p_id : str = Field(default=None)
+    start : str = Field(default=None)
+    end : str = Field(default=None)
+    exercise : str = Field(default=None)
+    poses : str = Field(default=None)
+
+    class Config:
+        schema_extra ={
+            "add_demo":{
+                "name":"John",
+                "discription":"Description about John's injury"
+            }
+        }

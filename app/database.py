@@ -14,13 +14,25 @@ db = client[MONGO_INITDB_DATABASE]
 UserLogin = db.userLogin
 PatientDetails = db.patientDetails
 TherapistDetails = db.therapistDetails
+SessionDetails = db.sessionDetails
+ExcerciseDetails = db.excerciseDetails
 UserLoginIndexes = UserLogin.index_information()
 PatientDetailsIndexes = PatientDetails.index_information()
 TherapistDetailsIndexes = TherapistDetails.index_information()
+ExcerciseDetailsIndexes = ExcerciseDetails.index_information()
 if(len(UserLoginIndexes)==0):
     UserLogin.create_index([("email", pymongo.ASCENDING),("userId", pymongo.ASCENDING)], unique=True)
 if(len(PatientDetailsIndexes)==0):
     PatientDetails.create_index([("patientId", pymongo.ASCENDING),("mobile", pymongo.ASCENDING)], unique=True)
 if(len(TherapistDetailsIndexes)==0):
     TherapistDetails.create_index([("therapistId", pymongo.ASCENDING),("email", pymongo.ASCENDING)], unique=True)
+if(len(ExcerciseDetailsIndexes)==0):
+    ExcerciseDetails.create_index([("ename", pymongo.ASCENDING)],unique=True)
+    
+    
+    
+    
+def excersice():
+    ex_data = {"ename":"shoulder","etitle":""}
+    ExcerciseDetails.insert_one()
 

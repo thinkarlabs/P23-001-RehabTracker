@@ -1,43 +1,45 @@
 	<div class="row">
+		{% for item in patients %}
 		<div class="col-6">
 		  <label for="exampleFormControlInput1">Name</label>
-		  <input type="email" class="form-control" id="exampleFormControlInput1" value="Rahul Jeswani" disabled>
+		  <input type="email" class="form-control" id="exampleFormControlInput1" value="{{item.name}}" disabled>
+		  <input type="text" class="form-control" id="patientDetails" value="{{item.p_Id}}" hidden>
 		</div>
 	  
 		<div class="col-3">
 		<label for="exampleFormControlInput1" class="ms-2">Gender</label>
 		<select id="level" class="form-select mx-2" disabled>
-		  <option value="L1" selected>Male</option>
-		  <option value="L2">Female</option>
-		  <option value="L3">Other</option>
+		  <option value="{{item.gender}}" selected>{{item.gender}}</option>
 		</select>
 		</div>
 
 		<div class="col-3">
 		  <label for="exampleFormControlInput1">Age</label>
-		  <input type="text" class="form-control" id="exampleFormControlInput1" value="27 (yrs)" disabled>
+		  <input type="text" class="form-control" id="exampleFormControlInput1" value="{{item.age}} (yrs)" disabled>
 		</div>
-
+		{% endfor %}
 	</div>
 	
-	<button type="button" class="btn btn-primary mt-3 ms-2" data-nav='physio.session.new' style="width:120px">New Session</button>
+	<button type="button" class="btn btn-primary mt-3 ms-2" id="newsession" data-nav='physio.session.new' style="width:120px">New Session</button>
 	
 	<div id='x-challenges' class="mt-2">
 		<table class="table" id="tbl_ch">
 		  <thead>
 			<tr>
 			  <th scope="col">Session Time</th>
-			  <th scope="col">Session Duration</th>
+			  <th scope="col">Session Duration(HH:MM)</th>
 			  <th scope="col">Exercise Count</th>
+			  <th scope="col">Observed By</th>
 			  <th scope="col" class="text-center">Action</th>
 			</tr>
 		  </thead>
 		  <tbody>
 		  {% for item in appointments %}
 			<tr>
-			  <td>{{item.session_date}} | {{item.session_time}}</td>
+			  <td>{{item.session_date}}</td>
 			  <td>{{item.session_dur}}</td>
 			  <td>{{item.session_excount}}</td>
+			  <td>{{item.session_observer}}</td>
 			  <td class="col-2">
 				<button type="button" class="btn btn-primary float-end mx-2" data-nav='admin.exercise.del'><i class="bi bi-box-arrow-in-right"></i></button>		  
 			  </td>
