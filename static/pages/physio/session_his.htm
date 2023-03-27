@@ -1,0 +1,56 @@
+{% extends "static/pages/_common/base.htm" %}
+
+{% block body %}
+<div id='x-main' class="container-full mt-5 p-3">
+<div class="container-md">
+
+	<div class="row">
+	<div class="col-12 p-2">
+		<h3 class="float-start ps-2">Session History 17a for Patient [Rahul Jeswani]</h3>
+	</div>
+
+	<div class="col-7 p-2" style="background-color:black;min-height:420px">
+	<script>
+	</script>
+	<main>
+	{% for item in sessiondata %}
+		<video width="650" height="440" controls>
+	  <source src="{{item.pat_video}}" type="video/mp4">
+	Your browser does not support the video tag.
+	</video>
+	{% endfor %}
+	</main>
+	</div>
+
+	<div class="col-4" style="min-height:420px">
+		<div class="card mb-4 rounded-3 shadow-sm">
+          <div class="card-header">
+            <h4 class="my-0 fw-normal">Summary</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">3<small class="text-muted fw-light">/14 squats</small></h1>
+            <button type="button" id ="mybutton" class="btn btn-lg btn-outline-primary pe-2" data-nav='' >Play</button>
+			<button class="btn btn-outline-primary btn-sm" id ="pauser" style="display: none">Pause</button>
+			<button type="button" id ="cbutton" class="btn btn-lg btn-outline-primary ps-2" data-nav='physio.session.new' >Download Report</button>
+          </div>
+        </div>
+
+		<div class="card rounded-3 shadow-sm" style="min-height:220px">
+          <div class="card-header">
+            <h4 class="my-0 fw-normal">Detailed</h4>
+          </div>
+          <div class="card-body">
+			<div id="right"></div>
+          </div>
+        </div>
+		
+	</div>
+
+
+	</div>
+			
+
+</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</div>
+{% endblock %}

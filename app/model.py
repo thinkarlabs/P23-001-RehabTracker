@@ -110,3 +110,21 @@ class UpdateInjurySchema(BaseModel):
                 "Description":"",
             }
         }
+        
+class addSessionExSchema(BaseModel):
+    p_id : str = Field(default=None)
+    start : str = Field(default=None)
+    end : str = Field(default=None)
+    exercise : str = Field(default=None)
+    poses : str = Field(default=None)
+
+    class Config:
+        schema_extra ={
+            "add_demo":{
+                "p_id":"patient id",
+                "start":"start time of session",
+                "end":"end time of session",
+                "exercise":"exercise name",
+                "poses":"array of poses"
+            }
+        }

@@ -3,18 +3,25 @@ from typing import List, Dict
 from fastapi import APIRouter,Request,Depends,Response,status,Body 
 from pydantic import BaseModel, EmailStr
 from app.model import addPatientSchema
-from app.model import UpdatePatientSchema
+from app.model import UpdatePatientSchema,addSessionExSchema
 from enum import Enum
 from datetime import datetime,date
-from app.database import PatientDetails,TherapistDetails
-from app.userSerializers import addPatientEntity,getPatientEntity,getOnePatientEntity,updatePatientEntity
+from app.database import PatientDetails,TherapistDetails,SessionDetails
+from app.userSerializers import addPatientEntity,getPatientEntity,getOnePatientEntity,updatePatientEntity,getSessionsEntity,getOneExercise
 from app.auth.jwt_bearer import jwtBearer,get_current_user
 import string
 import random
-
+import re
 
 patientapp = APIRouter()
-
+def getTherapistName(tp):
+    try:
+        name = TherapistDetails.find_one({"therapistId":tp})
+    except Exception as e:
+        print("Exception In patient:getTherapistName()")
+        print(e)
+        return {"status_code":status.HTTP_409_CONFLICT,"Info":"Hospital is not found","msg":"Fail"}
+    return name["name"]
 
 def get_hospital_name(TPID):
     try:
@@ -46,6 +53,27 @@ def generate_PatientId():
             break
         
     return PID
+    
+def getOnePatient(pdata):
+    patient=""
+    mobile_pattern = re.compile(r'[6-9][0-9]{9}\b') # 1) check startswith 6,7 or 8 or 9 . 2) Then contains 9 digits
+    try:
+        print(mobile_pattern.match(pdata))
+        if(mobile_pattern.match(pdata)):
+            print("Iam here")
+            patient =PatientDetails.find_one({"p_contact":pdata})
+            print(patient)
+        else:
+            patient =PatientDetails.find_one({"patientId":pdata})
+    except Exception as e:
+            print("Exception In Patient:getOnePatient()")
+            print(e)
+            return 0   
+    if patient:
+        patient_data = getOnePatientEntity([patient])
+    else:
+        return 0
+    return patient_data
 
 @patientapp.post("/patient",dependencies=[Depends(jwtBearer())],tags=["patient"])
 def add_person(person: addPatientSchema= Body(default=None)):
@@ -127,16 +155,75 @@ def update_person(person: UpdatePatientSchema= Body(default=None)):
 
 @patientapp.get("/patients/{p_id}",dependencies=[Depends(jwtBearer())],tags=["patient"])
 def get_person(p_id : str):
-    gen=""
-    try:
-        gen =PatientDetails.find_one({"patientId":p_id})
-    except Exception as e:
-            print("Exception In Patient:get_person()")
-            print(e)
-            return {"status_code":status.HTTP_409_CONFLICT,"Info":"Patient detail not found","msg":"Fail"}   
-    patient_data = getOnePatientEntity([gen])
+    patient_data = getOnePatient(p_id)
+    if patient_data == 0:
+        return {"status_code":status.HTTP_409_CONFLICT,"Info":"Patient detail not found","msg":"Fail"}
     return {"message": "Patients retrieved successfully!","patients":patient_data,"msg":"Success"}
 
-   
-            
+@patientapp.get("/getsession/{pdata}",dependencies=[Depends(jwtBearer())],tags=["Session"])
+def get_patient_sessions(pdata : str):
+    patient_data = getOnePatient(pdata)
+    patient=""
+    appo =""
+    if patient_data == 0:
+        return {"status_code":status.HTTP_409_CONFLICT,"Info":"Patient detail not found","msg":"Fail"}
+    try:
+        patient =SessionDetails.find({"p_id":pdata})
+        appo = getSessionsEntity(patient)
+        lst =[]
+        for tp in appo:
+            for i in tp["session_observer"]:
+                lst.append(getTherapistName(i))
+            tp["session_observer"]=lst
+            lst=[]
+    except Exception as e:
+            print("Exception In Patient:get_patient_sessions")
+            print(e)
+            return {"status_code":status.HTTP_409_CONFLICT,"Info":"Session detail not found","msg":"Fail"}    
+    return {"Info": "Patient retrieved successfully!","patients":patient_data,"appointments":appo,"msg":"Success"}
     
+@patientapp.get("/addsession/{p_id}",dependencies=[Depends(jwtBearer())],tags=["Session"])
+def add_patient_session(p_id : str):
+    patient_data = getOnePatient(p_id)[0]
+    if patient_data == 0:
+        return {"status_code":status.HTTP_409_CONFLICT,"Info":"Patient detail not found","msg":"Fail"}
+    
+    fromd = datetime.combine(date.today(), datetime.min.time())
+    try:
+        check =SessionDetails.find_one({"date": {"$gte": fromd, "$lt": datetime.today()},"p_id":p_id})
+        if(check is None):
+            Session_data={}
+            TID = TherapistDetails.find_one({"email":get_current_user()})
+            Session_data["date"]=datetime.today()
+            Session_data["p_id"]=p_id
+            Session_data["Injury"]=patient_data["injury_type"]
+            Session_data["c_s"]=0
+            Session_data["end"]=datetime.today()
+            Session_data["hospital"]=TID["hospital"]
+            Session_data["exercises"]=[]
+            SessionDetails.insert_one(Session_data)
+            Session_data={}
+            return {"message": "Patient Session Started successfully!","msg":"Success"}
+        else:
+            return {"message": "Patient Session Already Started","msg":"Success"}
+    except Exception as e:
+            print("Exception In Patient:add_patient_session")
+            print(e)
+            return {"status_code":status.HTTP_409_CONFLICT,"Info":"Session Not Started","msg":"Fail"}     
+
+@patientapp.post("/addexercisesession/",dependencies=[Depends(jwtBearer())],tags=["Session"])
+def add_exercise_session(ex: addSessionExSchema= Body(default=None)):
+    ex_data=getOneExercise(ex.dict())
+    p_id=ex_data["patientId"]
+    del ex_data["patientId"]
+    try :
+        TID = TherapistDetails.find_one({"email":get_current_user()})
+        ex_data["Observer"]=TID["therapistId"]
+        fromd = datetime.combine(date.today(), datetime.min.time())
+        SessionDetails.update_one({"date": {"$gte": fromd, "$lt": datetime.today()},"p_id":p_id},{'$push':{"exercises":ex_data},"$set":{"end":ex_data["timeto"]}})
+        ex_data=[]
+    except Exception as e:
+            print("Exception In Patient:add_patient_session")
+            print(e)
+            return {"status_code":status.HTTP_409_CONFLICT,"Info":"Exercise Not Saved","msg":"Fail"}    
+    return {"message": "Patient Exercise Details Saved","msg":"Success"}

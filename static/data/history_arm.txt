@@ -1,0 +1,16 @@
+{
+  "header": "History",
+  "sessiondata": [
+    {
+      "patient_id": "001",
+      "patient_name": "Rahul Jeswani",
+      "pat_exe": "Squats",
+      "pat_video": "./static/data/arm.webm",
+      "session_date": "12/Jan/2023",
+      "session_time": "09:00 AM",
+      "session_dur": "23 min(s)",
+      "session_excount": "3/4"
+    }
+  ],
+  "empty": false
+}
