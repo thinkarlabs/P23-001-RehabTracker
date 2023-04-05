@@ -7,7 +7,7 @@
 <div class="col-12 p-2">
 	<h3 class="float-start">Manage Patient</h3>
 	<button type="button" class="btn btn-primary float-end mx-2" data-nav='physio.patients'>Cancel</button>		
-	<button type="button" class="btn btn-primary float-end mx-2" data-do='web.patientA' data-form="addpatientform">Save</button>		
+	<button type="button" onclick="validateAdd()" id="saving" class="btn btn-primary float-end mx-2" >Save</button>
 </div>
 </div>
 <form method="post" id="addpatientform">
@@ -15,11 +15,24 @@
 
 	<div class="row">
 		<div class="col-6">
+			<style>
+				input.error {
+					border: 1.25px solid red;
+				}
+			</style>
 		  <label for="exampleFormControlInput1">Name</label>
-		  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Enter Your Name" name="name">
+          <!-- <input type="hidden" class="form-control" id="exampleFormControlInput44"  name="p_id" value="{{item.p_Id}}"> -->
+		  <input type="text" class="form-control" id="myname" placeholder="Enter Your Name" name="name" maxlength="27" value="{{item.name}}">
+		  <p id="eerrormessages" style=color:red></p>
 		</div>
 	  
 		<div class="col-3">
+			<style>
+				input.error {
+					/* margin: 30px; */
+					border: 1.25px solid red;
+				}
+			</style>
 		<label for="exampleFormControlInput1" class="ms-2">Gender</label>
 		<select id="level" class="form-select mx-2" name="gender">
 		  <option selected>Gender</option>
@@ -27,39 +40,75 @@
 		  <option value="F">Female</option>
 		  <option value="O">Other</option>
 		</select>
+		<p id="errormessaages" style=color:red></p>
 		</div>
 
+		<form id="age-form">
 		<div class="col-3">
-		  <label for="exampleFormControlInput1">Age</label>
-		  <input type="number" class="form-control" id="exampleFormControlInput1" name="age" >
+			<style>
+				input.error {
+					border: 1.25px solid red;
+				}
+			</style>
+		  <label for="age">Age</label>
+		  <input type="number" class="form-control" id="age" name="age" min="1" max="100" required value="{{item.age}}">
+		  <p id="error-message" style=color:red></p>
 		</div>
+	</form>
 
 		<div class="col-6 mt-3">
-		  <label for="exampleFormControlInput1">Contact Phone No</label>
-		  <input type="text" class="form-control" id="exampleFormControlInput1" name="contact_number">
+			<style>
+				input.error {
+					border: 1.25px solid red;
+				}
+			</style>
+		  <label for="phone">Contact Phone No</label>
+		  <input type="tel" class="form-control" id="phone" name="contact_number" minlength="10" maxlength="10" value="{{item.contact_number}}">
+		  <p id="errormessage" style=color:red ></p>
 		</div>
 
+
 		<div class="col-6 mt-3">
+			<style>
+				input.error {
+					border: 1.25px solid red;
+				}
+			</style>
 		  <label for="exampleFormControlInput1">Contact EMail ID</label>
-		  <input type="text" class="form-control" id="exampleFormControlInput1" name="email_id">
+		  <input type="email" class="form-control" id="email" name="email_id" value="{{item.email}}">
+		  <p id="errormessagess" style=color:red ></p>
 		</div>
 
 	</div>
 	
 	<div class="row my-3">
-	<h5 for="exampleFormControlInput1">Injury Details</h5>
+		
+		<h5 for="selectInjury">Injury Details</h5>
 		<div class="col-6">
-		  <label for="exampleFormControlInput1">Select Injury</label>
-		<select id="level" class="form-select" name="injury_type">
-		  <option selected></option>
-		  <option value="Elderly Impaired balance">Elderly Impaired balance</option>
-		  <option value="Osteoarthritis">Osteoarthritis</option>
-		  <option value="Spinal Cord Injury">Spinal Cord Injury</option>
-		</select>
+		  <style>
+			select.error {
+			  border: 1.25px solid red;
+			}
+		  </style>
+		  <label for="selectInjury">Select Injury</label>
+		 
+		  <select id="selectInjury" class="form-select" name="injury_type" required>
+			<option value="" selected></option>
+			<option value="Elderly Impaired balance">Elderly Impaired balance</option>
+			<option value="Osteoarthritis">Osteoarthritis</option>
+			<option value="Spinal Cord Injury">Spinal Cord Injury</option>
+		  </select>
+		  <p id="errormesssages" style="color:red;"></p>
 		</div>
 		<div class="col-3">
-		  <label for="exampleFormControlInput1">Planned Sessions</label>
-		  <input type="text" class="form-control" id="exampleFormControlInput1" name="planned_sessions" >
+			<style>
+				input.error {
+					border: 1.25px solid red;
+				}
+			</style>
+		  <label for="plannedSession">Planned Sessions</label>
+		  <input type="number" class="form-control" id="plannedSession" name="planned_sessions" min="1" max="20" required value="{{item.planned_sessions}}">
+		  <p id="errrormessage" style=color:red ></p>
 		</div>
 		<div class="col-3">
 		  <label for="exampleFormControlInput1">Completed Sessions</label>
@@ -70,8 +119,9 @@
 
 	<div class="row my-3">
 		<div class="col-12">
-			<label for="exampleFormControlInput1">Description</label>
-			<textarea class="form-control" name="discription"></textarea>
+			<label for="text-input">Description</label>
+			<textarea class="form-control" id="text-input" name="discription" maxlength="3000">{{item.description}}</textarea>
+			<p id="char-count">0 characters</p>
 		</div>
 	</div>
 </form>
