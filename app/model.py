@@ -177,6 +177,38 @@ class addInjuriesSchema(BaseModel):
     Aim : str = Field(default=None)
     Description : str = Field(default=None)
     Exercises : str = Field(default=None)
+
+    @validator('Title')
+    def validate_title(cls, v):
+        if not v:
+            raise ValueError('Title cannot be empty')
+        elif len(v) < 8:
+            raise ValueError('Title should be 8 characters long')
+        return v
+    
+    @validator('Aim')
+    def validate_aim(cls, v):
+        if not v:
+            raise ValueError('Aim cannot be empty')
+        elif len(v) < 30:
+            raise ValueError('Aim should be 30 characters long')
+        return v
+    
+    @validator('Description')
+    def validate_decription(cls, v):
+        if not v:
+            raise ValueError('Desription cannot be empty')
+        elif len(v) < 40:
+            raise ValueError('Description should be 30 characters long')
+        return v
+    
+    
+    @validator('Exercises')
+    def validate_exercises(cls, v):
+        if not v:
+            raise ValueError('Select ONE exercise')
+        return v
+
     class Config:
         schema_extra ={ 
             "add_demo":
@@ -192,6 +224,38 @@ class UpdateInjurySchema(BaseModel):
     Title : str = Field(default=None)
     Aim : str = Field(default=None)
     Description : str = Field(default=None)
+    Exercises : str = Field(default=None)
+
+    @validator('Title')
+    def validate_title(cls, v):
+        if not v:
+            raise ValueError('Title cannot be empty')
+        elif len(v) < 8:
+            raise ValueError('Title should be 8 characters long')
+        return v
+    
+    @validator('Description')
+    def validate_description(cls, v):
+        if not v:
+            raise ValueError('Desription cannot be empty')
+        elif len(v) < 40:
+            raise ValueError('Description should be 30 characters long')
+        return v
+    
+    @validator('Aim')
+    def validate_aim(cls, v):
+        if not v:
+            raise ValueError('Aim cannot be empty')
+        elif len(v) < 30:
+            raise ValueError('Aim should be 30 characters long')
+        return v
+    
+    @validator('Exercises')
+    def validate_exercises(cls, v):
+        if not v:
+            raise ValueError('Select ONE exercise')
+        return v
+
     class Config:
         schema_extra ={
             "add_demo":{

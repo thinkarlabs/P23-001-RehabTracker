@@ -2,8 +2,8 @@ let x_routes = {
   //"route": {x_api: "", x_page:"", x_div:"",x_code:""}
   "web.login": {x_page:"./static/pages/login.htm?v0.01"},
   "physio.injuries": {x_api : "/injuries",x_page:"./static/pages/physio/injuries.htm?v1",x_code:"/static/pages/physio/injuries.js"},
-  "physio.injury.new": {x_api : "/static/data/exercises.txt?v1a",x_page:"./static/pages/physio/injury.htm"},
-  "physio.injury.edit": {x_api : "/injury",x_page:"./static/pages/physio/injuryedit.htm"},
+  "physio.injury.new": {x_api : "/static/data/exercises.txt?v1a",x_page:"./static/pages/physio/injury.htm",x_code:"/static/js/app/injuryadd.js"},
+  "physio.injury.edit": {x_api : "/injury",x_page:"./static/pages/physio/injuryedit.htm",x_code:"/static/js/app/injuryedit.js"},
   "physio.sessions": {x_api : "/patient",x_page:"./static/pages/physio/sessions.htm"},
   "physio.session.list": {x_api : "/getsession",x_div:"ses_det",x_page:"./static/pages/physio/session_det.htm?v0.01",x_code:"/static/js/app/session_handel.js"},
   "physio.session.new": {x_api : "/static/data/exercises.txt?v1a",x_page:"./static/pages/physio/session.htm?v0.01"},
