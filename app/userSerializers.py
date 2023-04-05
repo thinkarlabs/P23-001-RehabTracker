@@ -61,14 +61,11 @@ def updatePatientEntity(patient) -> dict:
         return {
         "patientId":patient["p_id"],
         "p_name":patient["name"],
-        "p_email": patient["email_id"],
         "p_age": patient["age"],
-        "p_gender":patient["gender"],
-        "p_contact": patient["contact_number"],
-        "p_injury": patient["injury_type"],
         "Total_sessions":patient["planned_sessions"],
-        "p_description":patient["discription"]
-    }
+        "p_email": patient["email_id"],
+        "p_contact": patient["contact_number"]
+        }
 
 def addInjuryEntity(Injury) -> dict:
         return {

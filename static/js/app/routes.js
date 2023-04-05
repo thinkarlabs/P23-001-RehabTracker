@@ -12,8 +12,8 @@ let x_routes = {
   "physio.session.track.shoulder": {x_page:"./static/pages/physio/track.htm?v0.01",x_code:"/static/js/app/exercise_armup.js"},
   "physio.session.track.kneelift": {x_page:"./static/pages/physio/track.htm?v0.01",x_code:"/static/js/app/kneelift.js"},
   "physio.patients": {x_api : "/patient",x_page:"./static/pages/physio/patients.htm?v0.01"},
-  "physio.patient.new": {x_page:"./static/pages/physio/patient.htm"},
-  "physio.patient.edit": {x_api : "/patients",x_page:"./static/pages/physio/patientedit.htm"},
+  "physio.patient.new": {x_page:"./static/pages/physio/patient.htm",x_code:"/static/js/app/validations_add.js"},
+  "physio.patient.edit": {x_api : "/patients",x_page:"./static/pages/physio/patientedit.htm",x_code:"/static/js/app/validation.js"},
   "physio.exercises": {x_api : "/static/data/exercises.txt?v1a", x_page:"./static/pages/physio/exercises.htm"},
   "physio.exercise.new": {x_page:"./static/pages/admin/contest.htm"}
 }

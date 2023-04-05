@@ -7,19 +7,27 @@
 <div class="col-12 p-2">
 	<h3 class="float-start">Manage Patient</h3>
 	<button type="button" class="btn btn-primary float-end mx-2" data-nav='physio.patients'>Cancel</button>		
-	<button type="button" class="btn btn-primary float-end mx-2" data-do='web.patientE' data-form="updatepatientform">Update</button>		
+	<button type="button"  method="post" onclick="validate()" onsubmit="return validate();"  id="updateButton" class="btn btn-primary float-end mx-2" >Update</button>		
+	
 </div>
 </div>
-<form method="post" id="updatepatientform">
+<form method="post" id="updatepatientform" method="post" onsubmit="return validate();">
     {% for item in patients %}
     
 <div id='x-challenge' class="container-float">
 
 	<div class="row">
 		<div class="col-6">
+			<style>
+				input.error {
+					/* margin: 30px; */
+					border: 1.25px solid red;
+				}
+			</style>
 		  <label for="exampleFormControlInput1">Name</label>
-          <input type="hidden" class="form-control" id="exampleFormControlInput44"  name="p_id" value="{{item.p_Id}}">
-		  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Enter Your Name" name="name" value="{{item.name}}">
+          <!-- <input type="hidden" class="form-control" id="exampleFormControlInput44"  name="p_id" value="{{item.p_Id}}"> -->
+		  <input type="text" class="form-control" id="myname" placeholder="Enter Your Name" name="name" maxlength="27" value="{{item.name}}">
+		  <p id="eerrormessages" style=color:red></p>
 		</div>
 	  
 		<div class="col-3">
@@ -31,20 +39,42 @@
 		  <option value="O">O</option>
 		</select>
 		</div>
-
+    <form id="age-form">
 		<div class="col-3">
-		  <label for="exampleFormControlInput1">Age</label>
-		  <input type="number" class="form-control" id="exampleFormControlInput1" name="age" value="{{item.age}}">
+			<style>
+				input.error {
+					/* margin: 30px; */
+					border: 1.25px solid red;
+				}
+			</style>
+		  <label for="age">Age</label>
+		  <input type="number" class="form-control" id="age" name="age" min="1" max="100" required value="{{item.age}}">
+		  <p id="error-message" style=color:red></p>
+		</div>
+	</form>
+
+		<div class="col-6 mt-3">
+			<style>
+				input.error {
+					/* margin: 30px; */
+					border: 1.25px solid red;
+				}
+			</style>
+		  <label for="phone">Contact Phone No</label>
+		  <input type="tel" class="form-control" id="phone" name="contact_number" minlength="10" maxlength="10" value="{{item.contact_number}}">
+		  <p id="errormessage" style=color:red ></p>
 		</div>
 
 		<div class="col-6 mt-3">
-		  <label for="exampleFormControlInput1">Contact Phone No</label>
-		  <input type="text" class="form-control" id="exampleFormControlInput1" name="contact_number" value="{{item.contact_number}}">
-		</div>
-
-		<div class="col-6 mt-3">
+			<style>
+				input.error {
+					/* margin: 30px; */
+					border: 1.25px solid red;
+				}
+			</style>
 		  <label for="exampleFormControlInput1">Contact EMail ID</label>
-		  <input type="text" class="form-control" id="exampleFormControlInput1" name="email_id" value="{{item.email}}">
+		  <input type="email" class="form-control" id="email" name="email_id" value="{{item.email}}">
+		  <p id="errormessagess" style=color:red ></p>
 		</div>
 
 	</div>
@@ -61,8 +91,15 @@
 		</select>
 		</div>
 		<div class="col-3">
-		  <label for="exampleFormControlInput1">Planned Sessions</label>
-		  <input type="text" class="form-control" id="exampleFormControlInput1" name="planned_sessions" value="{{item.planned_sessions}}">
+			<style>
+				input.error {
+					/* margin: 30px; */
+					border: 1.25px solid red;
+				}
+			</style>
+		  <label for="plannedSession">Planned Sessions</label>
+		  <input type="number" class="form-control" id="plannedSession" name="planned_sessions" min="1" max="20" required value="{{item.planned_sessions}}">
+		  <p id="errrormessage" style=color:red ></p>
 		</div>
 		<div class="col-3">
 		  <label for="exampleFormControlInput1">Completed Sessions</label>
@@ -73,8 +110,9 @@
 
 	<div class="row my-3">
 		<div class="col-12">
-			<label for="exampleFormControlInput1">Description</label>
-			<textarea class="form-control" name="discription" >{{item.description}}</textarea>
+			<label for="text-input">Description</label>
+			<textarea class="form-control" id="text-input" name="discription" maxlength="3000">{{item.description}}</textarea>
+			<p id="char-count">0 characters</p>
 		</div>
 	</div>
     {% endfor %}
