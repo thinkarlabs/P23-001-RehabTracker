@@ -11,46 +11,71 @@
         {% for item in Injury %}
 	<div class="col-8">
 	  <div class="row">
+		<style>
+			input.error {
+				border: 1.25px solid red
+			}
+		</style>
 		<div class="col-12">
-		  <label for="exampleFormControlInput1">Title</label>
+		  <label for="title" required>Title</label>
           <input type="hidden" class="form-control" id="exampleFormControlInput44"  name ="i_id" value="{{item.i_Id}}">
-		  <input type="text" class="form-control" id="exampleFormControlInput1" name = "Title" value="{{item.title}}">
+		  <input type="text" class="form-control" id="title" maxlength="50" name = "Title" value="{{item.title}}">
+		  <p id="error-message" style="color: red"></p>
 		</div>
 		<div class="col-12">
-		  <label for="exampleFormControlInput1">Aim</label>
-		  <textarea type="text" class="form-control" id="exampleFormControlInput1" name = "Aim" >{{item.aim}}</textarea>
+			<style>
+				input.error {
+					border: 1.25px solid red
+				}
+			</style>
+		  <label for="aim" required>Aim</label>
+		  <textarea type="text" class="form-control" id="aim" maxlength="100" name = "Aim" >{{item.aim}}</textarea>
+		  <p id="errormessages" style="color: red"></p>
 		</div>
 		<div class="col-12">
-		  <label for="exampleFormControlInput1">Description</label>
-		  <textarea type="text" class="form-control" id="exampleFormControlInput1" name = "Description" >{{item.description}}</textarea>
+			<style>
+				input.error,textarea.error {
+					border: 1.25px solid red
+				}
+			</style>
+		  <label for="text-input" required>Description</label>
+		  <textarea type="text" id="text-input" class="form-control" maxlength="300" name = "Description" >{{item.description}}</textarea>
+		  <p id="char-count"> characters</p>
+		  <p id="errormessages1" style="color: red"></p>
 		</div>
 	  </div>
 	
 	</div>
 
 	<div class="col-4">
-	  <label for="exampleFormControlInput1">Exercises</label>
-		<ul class="list-group">
+		<style>
+			.error{
+				border: 1.25px solid red
+			}
+		</style>
+	  <label for="exampleFormControlInput1" required="">Exercises</label>
+		<ul class="list-group" id = "listId">
 		{% for item in exercises %}
 		{% if item in Injury[0]["exercises"] %}
 		  <li class="list-group-item">
-			<input class="form-check-input me-1" type="checkbox" value="{{item}}" name = "exercise{{ loop.index }}" aria-label="..." checked>
+			<input class="form-check-input me-1" id = "selectExercises1" type="checkbox" value="{{item}}" name = "exercise{{ loop.index }}" aria-label="..." checked>
 			{{item}}
 		  </li>
 		  {% else %}
 		  <li class="list-group-item">
-			<input class="form-check-input me-1" type="checkbox" value="{{item}}" name = "exercise{{ loop.index }}" aria-label="..." >
+			<input class="form-check-input me-1"  type="checkbox" value="{{item}}" name = "exercise{{ loop.index }}" aria-label="..." >
 			{{item}}
 		  </li>
 		  {% endif %}
 		{% endfor %}
 		</ul>
+		<p id="ERROR1" style="color: red"></p>
 	</div>
     {% endfor %}
 </form>
 <div class="row">
 <div class="col-12 p-2">
-	<button type="button" class="btn btn-primary float-end mx-2" data-do="web.injuriesE" data-form="updateinjuryform">Update</button>		
+	<button type="submit" id="updateBtn"class="btn btn-primary float-end mx-2">Update</button>		
 	<button type="button" class="btn btn-primary float-end mx-2" data-nav="physio.injuries">Cancel</button>		
 </div>
 </div>

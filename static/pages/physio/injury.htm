@@ -12,35 +12,60 @@
 	<div class="col-8">
 	  <div class="row">
 		<div class="col-12">
-		  <label for="exampleFormControlInput1">Title</label>
-		  <input type="text" class="form-control" id="exampleFormControlInput1" name = "Title"placeholder="">
+			<style>
+				input.error {
+					border: px solid red
+				}
+			</style>
+		  <label for="Title">Title</label>
+		  <input type="text" class="form-control" id="title" name = "Title" maxlength= "50" placeholder="Enter a title">
+		  <p id="error-message" style="color: red"></p>
 		</div>
 		<div class="col-12">
-		  <label for="exampleFormControlInput1">Aim</label>
-		  <textarea type="text" class="form-control" id="exampleFormControlInput1" name = "Aim" placeholder=""></textarea>
+			<style>
+				input.error,textarea.error {
+					border: 1.25px solid red
+				}
+			</style>
+		  <label for="aim">Aim</label>
+		  <textarea type="text" class="form-control" id="aim" name = "Aim" maxlength="100" placeholder="Enter Aim"></textarea>
+		  <p id="errormessages" style="color: red"></p>
 		</div>
 		<div class="col-12">
-		  <label for="exampleFormControlInput1">Description</label>
-		  <textarea type="text" class="form-control" id="exampleFormControlInput1" name = "Description" placeholder=""></textarea>
-		</div>
+			<style>
+				input.error,textarea.error {
+					border: 1.25px solid red
+				}
+			</style>
+			<label for="text-input" required>Description</label>
+			<textarea type="text" id="text-input" class="form-control" maxlength="300" name = "Description"  placeholder="Enter description about the Injury" ></textarea>
+			<p id="char-count"> characters</p>
+			<p id="errormessages1" style="color: red"></p>
+		  </div>
 	  </div>
 	</div>
 
 	<div class="col-4">
-	  <label for="exampleFormControlInput1">Exercises</label>
-		<ul class="list-group">
-		{% for item in exercises %}
-		  <li class="list-group-item">
-			<input class="form-check-input me-1" type="checkbox" value="{{item.ex_title}}" name = "exercise{{ loop.index }}" aria-label="...">
-			{{item.ex_title}}
-		  </li>
-		{% endfor %}
-		</ul>
+		<style>
+			.error{
+				border: 1.25px solid red
+			}
+		</style>
+			<label for="selectExercises1">Exercises</label>
+				<ul class="list-group"  id = "listId">
+					{% for item in exercises %}
+						<li class="list-group-item">
+							<input class="form-check-input me-1" id = "selectExercises1" type="checkbox" value="{{item.ex_title}}" name = "exercise{{ loop.index }}" aria-label="...">
+							{{item.ex_title}}
+						</li>
+					{% endfor %}
+				</ul>
+			<p id="ERROR1" style="color: red"></p>
 	</div>
 </form>
 <div class="row">
 <div class="col-12 p-2">
-	<button type="button" class="btn btn-primary float-end mx-2" data-do="web.injuriesA" data-form="addinjuryform">Save</button>		
+	<button type="submit" id = "saveBtn" class="btn btn-primary float-end mx-2">Save</button>		
 	<button type="button" class="btn btn-primary float-end mx-2" data-nav="physio.injuries">Cancel</button>		
 </div>
 </div>
