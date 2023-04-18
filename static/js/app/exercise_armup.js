@@ -2,11 +2,13 @@ var s1 = function(PoseStream) {
 	let capture;
 	let poseNet;
 	let poses;
+	let prevPose = null;
 	let pose;
 	let skeleton;
 	let skelt=true;
 	let armCount = 0;
 	let count =0;
+	let recording_started=false;
 	let lastPose = "";
 	let canvas;
 	let buttonS;
@@ -93,19 +95,21 @@ var s1 = function(PoseStream) {
     recorder.ondataavailable = function(e) {
       // Whenever data is available from the MediaRecorder put it in the array
       chunks.push(e.data);
-	  //console.log(poses[0])
-	  recording_movement.push(poses[0]);
+	// 	recording_movement.push(poses[0]);
+	
     };
     recorder.onstop = function(e) {
       var viddiv = document.getElementById('right');
-      var video = document.getElementById('myvideo');
+	  var video = document.getElementById('myvideo');
+	//   console.log("lenntgh "+recording_movement.length)
       if (video === null) {
         video = document.createElement('video');
         video.setAttribute('id', 'myvideo');
         video.style.width = "310px";
         viddiv.appendChild(video);
-        video.controls = true;
-      }
+		video.controls = true;
+		recording_started=false;
+	  }
       // Create a blob - Binary Large Object of type video/webm
       var blob = new Blob(chunks, { 'type': 'video/webm' });
       // Generate a URL for the blob
@@ -117,6 +121,7 @@ var s1 = function(PoseStream) {
     };
     recorder.start();
 	record_start = new Date().getTime();
+	recording_started=true;
     PartXY = true;
 	document.getElementById("mybutton").style.display = "none";
 	var pbutton = document.getElementById('pauser');
@@ -153,13 +158,18 @@ var s1 = function(PoseStream) {
 
 	PoseStream.gotPoses= async function() {
 	  poses = await detector.estimatePoses(capture.elt);
-	  //console.log(poses);
+	// Check if the current pose is different from the previous pose
 	  if (poses.length > 0) {
 		pose = poses[0];
+		if (prevPose !== null && pose !== null && JSON.stringify(pose) !==JSON.stringify(prevPose) && recording_started===true ){
+			recording_movement.push(pose);
+		}
+		// Update the previous pose with the current pose
+		prevPose = pose;
 	  }
 	  setTimeout(PoseStream.gotPoses, 0);
 	}
-
+	
 	PoseStream.modelLoaded=function() {
 		console.log('poseNet ready');
 	}
@@ -301,6 +311,6 @@ var s1 = function(PoseStream) {
 
 	  }
 	  setTimeout(PoseStream.armsUp, 100);
-	}
+	}	
 };
 new p5(s1);

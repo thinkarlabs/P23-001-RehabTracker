@@ -6,6 +6,10 @@ var s1 = function(PoseStream) {
  let skeleton=true;
  let pics;
  let buttonS;
+ let prevPose = null;
+ let pose;
+ let recording_started=false;
+ let record_start =0
  let buttonC;
  let canvas
  let recorder
@@ -71,7 +75,18 @@ var s1 = function(PoseStream) {
 	PoseStream.Squats();
   }
   PoseStream.stopCapture = function() {
-		capture.remove();
+	stopped = true;
+	var code = '<form method="post" >' +
+			'<input type="text" class="form-control" id="patientDetails" name="p_id" value="'+localStorage.getItem("current_patient")+'" hidden>'+
+			'<input type="text" class="form-control" id="patientDetails" name="start" value="'+record_start+'" hidden>'+
+			'<input type="text" class="form-control" id="patientDetails" name="exercise" value="armup" hidden>'+
+			'<input type="text" class="form-control" id="patientDetails" name="end" value="'+new Date().getTime()+'" hidden>'+
+			"<input type='text' class='form-control' id='patientDetails' name='poses' value='"+JSON.stringify(recording_movement)+"' hidden>"+
+			'</form>' + 
+	
+		//alert("session started");
+	capture.remove();
+	x_post(code,'/addexercisesession','physio.session.new')
 	}
   PoseStream.toggleVid = function() {
   if (playing) {
@@ -94,13 +109,15 @@ var s1 = function(PoseStream) {
     };
     recorder.onstop = function(e) {
       var viddiv = document.getElementById('right');
-      var video = document.getElementById('myvideo');
+	  var video = document.getElementById('myvideo');
+	//   console.log("lenntgh "+recording_movement.length)
       if (video === null) {
         video = document.createElement('video');
         video.setAttribute('id', 'myvideo');
         video.style.width = "310px";
         viddiv.appendChild(video);
-        video.controls = true;
+		video.controls = true;
+		recording_started=false;
       }
       // Create a blob - Binary Large Object of type video/webm
       var blob = new Blob(chunks, { 'type': 'video/webm' });
@@ -111,8 +128,10 @@ var s1 = function(PoseStream) {
       PoseStream.saveJSON(recording_movement, 'Frame.json');
       recording_movement = [];
     };
-    recorder.start();
-    PartXY = true;
+	recorder.start();
+	record_start = new Date().getTime();
+	PartXY = true;
+	recording_started=true;
 	document.getElementById("mybutton").style.display = "none";
 	var pbutton = document.getElementById('pauser');
 	pbutton.style.display = 'inline';
@@ -307,6 +326,14 @@ var s1 = function(PoseStream) {
 		  distanceHipAnkle = Math.sqrt( xDelta*xDelta + yDelta*yDelta );
 	}
 	PoseStream.Squats=function(){
+		if (poses.length > 0) {
+			pose = poses[0];
+			if (prevPose !== null && pose !== null && JSON.stringify(pose) !==JSON.stringify(prevPose) && recording_started===true ){
+				recording_movement.push(pose);
+			}
+			// Update the previous pose with the current pose
+			prevPose = pose;
+		  }
 		if (poses && poses.length > 0 && count==17) 
 		{
 			if ((Math.round(LkneeFlexion) < 100 && Math.round(RkneeFlexion)<100) || (poses[0].keypoints[11].y+10>=poses[0].keypoints[13].y && poses[0].keypoints[12].y+10>=poses[0].keypoints[14].y) || distanceHipAnkle<105 ) {
