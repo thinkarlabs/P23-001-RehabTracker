@@ -191,10 +191,21 @@ function getFormData($form) {
 }
 
 
-function loadScript(scriptSource){ 
-	var script = document.createElement('script');
-	script.src = scriptSource;
-	document.body.appendChild(script);
+// function loadScript(scriptSource){ 
+// 	var script = document.createElement('script');
+// 	script.src = scriptSource;
+// 	document.body.appendChild(script);
+// }
+function loadScript(scriptSource) {
+	var scripts = document.getElementsByTagName('script');	
+    for (var i = 0; i < scripts.length; i++) {
+        if (scripts[i].src == scriptSource) {
+            return; 
+        }
+    }
+    var script = document.createElement('script');
+    script.src = scriptSource;
+    document.body.appendChild(script);
 }
 window.addEventListener('popstate', onPopState);
 
